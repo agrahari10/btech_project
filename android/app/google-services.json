@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "194111794965",
+    "project_id": "locally-cc224",
+    "storage_bucket": "locally-cc224.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:194111794965:android:e1af67e15fb426a1b1431c",
+        "android_client_info": {
+          "package_name": "com.example.btech_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "194111794965-6vehq25k20ihck1e3ul4gbdk60uu3tmu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4SFaZwTMM5gtFSFHCNEyIgEsADjMLDnE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "194111794965-6vehq25k20ihck1e3ul4gbdk60uu3tmu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
