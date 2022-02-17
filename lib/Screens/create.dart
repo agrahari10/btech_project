@@ -52,6 +52,8 @@ class _CreateAccountState extends State<CreateAccount> {
           errorCode == 'ERROR_OPERATION_NOT_ALLOWED')
         errorText = 'Server error, please try again later.';
       else
+        print('@'*100);
+        print(errorCode);
         errorText = 'Error!';
 
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -314,8 +316,10 @@ class _CreateAccountState extends State<CreateAccount> {
                           padding: const EdgeInsets.all(10.0),
                           child: TextFormField(
                             controller: phoneController,
+                            keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                                 fillColor: Colors.white,
+                                // keyboardType: TextInputType.number,
                                 focusedBorder:OutlineInputBorder(
                                   borderSide: const BorderSide(color: Color(0xfffE11E1E), width: 3.0),
                                   borderRadius: BorderRadius.circular(15.0),

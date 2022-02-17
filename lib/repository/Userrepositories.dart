@@ -40,23 +40,6 @@ class UserRepository with ChangeNotifier {
 
         _appState = AppState.authenticated;
         notifyListeners();
-        // var value = await _firestore
-        //     .collection('users')
-        //     .doc(FirebaseAuth.instance.currentUser?.uid)
-        //     .get();
-        // print('*' * 100);
-        // print(value.data());
-        // print('*' * 100);
-        // if (value.data()?['isRequestAccepted'] == 'accepted') {
-        //   _appState = AppState.authenticated;
-        //   notifyListeners();
-        // } else {
-        //   _appState = AppState.unauthorised;
-        //   notifyListeners();
-        // }
-        // print('*' * 200);
-        // print(data);
-        // print('*' * 200);
       }
     });
   }
@@ -66,27 +49,8 @@ class UserRepository with ChangeNotifier {
     return currentUser != null;
   }
 
-  // Function to get the user and userId
-  // Future<String> getUser() async {
-  //   return (await _firebaseAuth.currentUser).uid;
-  // }
-
-  Future<bool> isFirstTime(String userId) async {
-    bool exist = false;
-    await _firestore.collection('users').doc(userId).get().then((var user) {
-      exist = user.exists;
-    }).catchError((error) {
-      exist = true;
-    });
-
-    return exist;
-  }
 
   Future<dynamic> login(String email, String password) async {
-    // try {
-    // _appState = AppState.authenticating; //set current state to loading state.
-    // notifyListeners();
-
     var user = await _auth
         .signInWithEmailAndPassword(email: email, password: password)
         .catchError((error) {
@@ -100,13 +64,6 @@ class UserRepository with ChangeNotifier {
     _appState = AppState.authenticated;
     notifyListeners();
     return user;
-    // }
-    //  catch (e) {
-    //   print(e.toString() + '*******');
-    //   _appState = AppState.unauthenticated;
-    //   notifyListeners();
-    //   throw e;
-    // }
   }
 
   Future<dynamic> signup({
@@ -148,10 +105,6 @@ class UserRepository with ChangeNotifier {
       'phoneNumber': phoneNumber,
       'uuid': FirebaseAuth.instance.currentUser!.uid,
       'joinDate': Timestamp.now(),
-      // 'isRequestAccepted': 'pending', // pending, accepted, rejected
-      // 'wins': 0,
-      // 'participated': 0,
-      // 'isAdmin': false,
     }).catchError((error) {
       _appState = AppState.unauthenticated;
       notifyListeners();
@@ -194,10 +147,10 @@ class UserRepository with ChangeNotifier {
 
     UploadTask uploadTask = firebaseStorageRef.putFile(image);
 
-    TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+    TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {});
     String imageUrl = await taskSnapshot.ref.getDownloadURL();
 
-    _firestore.collection('users').doc(_firebaseAuth.currentUser!.uid).update({
+    await _firestore.collection('users').doc(_firebaseAuth.currentUser!.uid).update({
       'name': name,
       'address': address,
       'state': state,
@@ -207,57 +160,3 @@ class UserRepository with ChangeNotifier {
     });
   }
 }
-// }
-// import 'package:firebase_core/firebase_core.dart';
-// import 'package:flutter/widgets.dart';
-// import 'dart:io';
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_storage/firebase_storage.dart';
-// import 'package:flutter/material.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-//
-// enum Status { Uninitialized, Authenticated, Authenticating, Unauthenticated }
-//
-// class UserRepository with ChangeNotifier {
-//   FirebaseAuth _auth;
-//   var _user;
-//   Status _status = Status.Uninitialized;
-//
-//   UserRepository.instance() : _auth = FirebaseAuth.instance {
-//     _auth.authStateChanges().listen(_onAuthStateChanged);
-//   }
-//
-//   Status get status => _status;
-//   get user => _user;
-//
-//   Future<bool> signIn(String email, String password) async {
-//     try {
-//       _status = Status.Authenticating;
-//       notifyListeners();
-//       await _auth.signInWithEmailAndPassword(email: email, password: password);
-//       return true;
-//     } catch (e) {
-//       _status = Status.Unauthenticated;
-//       notifyListeners();
-//       return false;
-//     }
-//   }
-//
-//   Future signOut() async {
-//     _auth.signOut();
-//     _status = Status.Unauthenticated;
-//     notifyListeners();
-//     return Future.delayed(Duration.zero);
-//   }
-//
-//   Future<void> _onAuthStateChanged(firebaseUser) async {
-//     if (firebaseUser == null) {
-//       _status = Status.Unauthenticated;
-//     } else {
-//       _user = firebaseUser;
-//       _status = Status.Authenticated;
-//     }
-//     notifyListeners();
-//   }
-// }
