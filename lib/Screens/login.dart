@@ -53,22 +53,6 @@ class _LoginPageState extends State<LoginPage> {
         errorText = 'Login failed, try again!';
       }
 
-      // ScaffoldMessenger.of(context).hideCurrentSnackBar();
-      // ScaffoldMessenger.maybeOf(context)?.hideCurrentSnackBar();
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   SnackBar(
-      //     content: Row(
-      //       children: [
-      //         Expanded(child: Text(errorText)),
-      //         Icon(
-      //           Icons.error,
-      //           color: Colors.white,
-      //         ),
-      //       ],
-      //     ),
-      //   ),
-      // );
-
       Fluttertoast.showToast(msg: errorText);
     }
 
@@ -222,35 +206,9 @@ class _LoginPageState extends State<LoginPage> {
                                 });
 
                                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
-
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (context) => TabPage(),
-                                //   ),
-                                // );
                               },
                             ),
                           ),
-
-                          // Center(
-                          //   child: ElevatedButton(
-                          //     child: Text("Submit",style: KtextStyle.copyWith(color: Colors.white),),
-                          //     onPressed: (){
-                          //       print("it's pressed");
-                          //       Navigator.push(context, MaterialPageRoute(builder: (context) => Sucessfull()));
-                          //
-                          //     },
-                          //     style: ElevatedButton.styleFrom(
-                          //       primary: Color(0xff37474F),
-                          //       onPrimary: Colors.white,
-                          //       shape: RoundedRectangleBorder(
-                          //         borderRadius: BorderRadius.circular(10.0),
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
-
 
 
 

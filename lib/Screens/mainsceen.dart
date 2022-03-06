@@ -200,6 +200,7 @@ class _MainScreenState extends State<MainScreen> {
           setState(() {
             _selectedIndex = index;
           });
+
         },
       ),
       body: _widgetOptions.elementAt(_selectedIndex),
