@@ -68,18 +68,18 @@ class _ProfilePageState extends State<ProfilePage> {
                       hintText: "Name",
                       regEx: r'.{2,}',
                     ),
-                    CustomTextField(
-                      obscureText: false,
-                      onSaved: (_value) {
-                        setState(() {
-                          _email = _value;
-                        });
-                      },
-                      hintText: "Email",
-                      regEx: r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                    // CustomTextField(
+                    //   obscureText: false,
+                    //   onSaved: (_value) {
+                    //     setState(() {
+                    //       _email = _value;
+                    //     });
+                    //   },
+                    //   hintText: "Email",
+                    //   regEx: r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
           
-                      // regEx: r'.{8,}',
-                    ),
+                    //   // regEx: r'.{8,}',
+                    // ),
                     // CustomTextField(
                     //   obscureText: true,
                     //   onSaved: (_value) {
@@ -229,16 +229,17 @@ class _ProfilePageState extends State<ProfilePage> {
           if(_updateFormKey.currentState!.validate() && imageFilePath.isNotEmpty){
             _updateFormKey.currentState!.save();
              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              duration: Duration(seconds:10),
+              duration: Duration(minutes:10),
               content: Row(
                 children: [
-                  Expanded(child: Text('Registering...')),
+                  Expanded(child: Text('Updating...')),
                   CircularProgressIndicator(),
                 ],
               ),
             ),);
             await _userRepository!.updateUserProfile(name: _name!, phoneNumber: _phoneNumber!, address: _address!, state: _state!, country: _country!, image: File(imageFilePath),);
-           
+           ScaffoldMessenger.of(context).hideCurrentSnackBar();
+           Navigator.pop(context);
             // await  _userRepository;
             // String? _uid = await _auth.registerUserUsingEmailAndPassword(_email!, _password!);
             // // CircularProgressIndicator();

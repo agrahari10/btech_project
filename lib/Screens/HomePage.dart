@@ -1,3 +1,5 @@
+import 'package:btech_project/Screens/postStrories.dart';
+import 'package:btech_project/Screens/postsection.dart';
 import 'package:btech_project/repository/Userrepositories.dart';
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -19,6 +21,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Location location = new Location();
   LocationData? _currentPosition;
   // GeoCode geoCode = GeoCode();
+  // static const _actionTitles = [ 'Post only Text','Post With caption'];
+
 
 
   @override
@@ -30,51 +34,28 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget build(BuildContext context) {
     final _userRepository = Provider.of<UserRepository>(context);
-    Size size = MediaQuery
-        .of(context)
-        .size;
-    return Scaffold(
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: SizedBox(
-        height: 40,
-        width: 40,
-        // decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.0)),
-
-        child: FloatingActionButton(
-          child: Icon(Icons.add), //child widget inside this button
-          shape: BeveledRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0)
+    Size size = MediaQuery.of(context).size;
+    var scaffold = Scaffold(
+      floatingActionButton: ExpandableFab(
+        distance: 112.0,
+        children: [
+          ActionButton(
+            onPressed: (){
+            
+              // print('dd'* 100);
+            },
+            // onPressed: () => _showAction(context, 0),
+            icon: const Icon(Icons.post_add),
           ),
-          onPressed: () {
-            print("Button is pressed.");
-            //task to execute when this button is pressed
-          },
-        ),
-      ),
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
-        // title: Row(
-        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //   children: [
-        //     IconButton(
-        //       onPressed: () {
-        //         Navigator.pop(context);
-        //         },
-        //       icon: Icon(Icons.arrow_back),
-        //       color: Colors.black,
-        //     ),
-        //     IconButton(
-        //       onPressed: () async{
-        //         await _userRepository.logout();
-        //       },
-        //       icon: Icon(Icons.logout),
-        //       color: Colors.black,
-        //     ),
-        //   ],
-        // ),
-
-
+          ActionButton(
+            onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => PostPage())  // for post images with caption 
+            );
+            },
+            // onPressed: () => _showAction(context, 1),
+            icon: const Icon(Icons.insert_photo),
+          ),
+        ],
       ),
       body: ListView.builder(
         itemCount: 10,
@@ -172,6 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
         },
       ),
     );
+    return scaffold;
   }
 
   getLoc() async {
@@ -193,31 +175,31 @@ class _HomeScreenState extends State<HomeScreen> {
         return;
       }
     }
-    
+
     final LocationData position = await location.getLocation();
 
     print(position.latitude);
     print(position.longitude);
-    print("*"*100);
-  //   _currentPosition = await location.getLocation();
-  //   _initialcameraposition = LatLng(_currentPosition.latitude,_currentPosition.longitude);
-  //   location.onLocationChanged.listen((LocationData currentLocation) {
-  //     print("${currentLocation.longitude} : ${currentLocation.longitude}");
-  //     setState(() {
-  //       _currentPosition = currentLocation;
-  //       _initialcameraposition = LatLng(_currentPosition.latitude,_currentPosition.longitude);
-  //
-  //       DateTime now = DateTime.now();
-  //       _dateTime = DateFormat('EEE d MMM kk:mm:ss ').format(now);
-  //       _getAddress(_currentPosition.latitude, _currentPosition.longitude)
-  //           .then((value) {
-  //         setState(() {
-  //           _address = "${value.first.addressLine}";
-  //         });
-  //       });
-  //     });
-  //   });
-  // }
+    print("*" * 100);
+    //   _currentPosition = await location.getLocation();
+    //   _initialcameraposition = LatLng(_currentPosition.latitude,_currentPosition.longitude);
+    //   location.onLocationChanged.listen((LocationData currentLocation) {
+    //     print("${currentLocation.longitude} : ${currentLocation.longitude}");
+    //     setState(() {
+    //       _currentPosition = currentLocation;
+    //       _initialcameraposition = LatLng(_currentPosition.latitude,_currentPosition.longitude);
+    //
+    //       DateTime now = DateTime.now();
+    //       _dateTime = DateFormat('EEE d MMM kk:mm:ss ').format(now);
+    //       _getAddress(_currentPosition.latitude, _currentPosition.longitude)
+    //           .then((value) {
+    //         setState(() {
+    //           _address = "${value.first.addressLine}";
+    //         });
+    //       });
+    //     });
+    //   });
+    // }
   }
   //
   // _getCurrentLocation() {
@@ -233,3 +215,20 @@ class _HomeScreenState extends State<HomeScreen> {
   // }
 }
 
+
+// @immutable
+// class ExpandableFab extends StatefulWidget {
+//   const ExpandableFab({
+//     Key? key,
+//     this.initialOpen,
+//     required this.distance,
+//     required this.children,
+//   }) : super(key: key);
+
+//   final bool? initialOpen;
+//   final double distance;
+//   final List<Widget> children;
+
+//   @override
+//   _ExpandableFabState createState() => _ExpandableFabState();
+// }
