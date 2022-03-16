@@ -1,6 +1,9 @@
 import 'package:btech_project/Page/Calling.dart';
 import 'package:btech_project/Page/chat.dart';
 import 'package:btech_project/Page/profile.dart';
+import 'package:btech_project/Screens/ChatPage.dart';
+import 'package:btech_project/Screens/ChatUserPage.dart';
+import 'package:btech_project/Screens/Chat_Screen.dart';
 import 'package:btech_project/repository/Userrepositories.dart';
 import 'package:btech_project/widgets/style.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -107,8 +110,8 @@ class _MainScreenState extends State<MainScreen> {
 
   List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
-    Chat(),
-    Call(),
+    ChatsPage(),
+    UsersPage(),
     ProfilePage(),
   ];
 
@@ -120,15 +123,8 @@ class _MainScreenState extends State<MainScreen> {
         elevation: 0,
         backgroundColor: Colors.white,
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(Icons.arrow_back),
-              color: Colors.black,
-            ),
             IconButton(
               onPressed: () async{
                 await _userRepository.logout();
@@ -172,18 +168,18 @@ class _MainScreenState extends State<MainScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-                Icons.phone,
+                Icons.supervised_user_circle,
                 color: Colors.blueGrey
             ),
-            label: 'Chat',
+            label: 'Users',
             activeIcon: Icon(
-              Icons.phone,
+              Icons.supervised_user_circle,
               color: Colors.black12,
             ),
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.person,
+              Icons.edit_note_sharp,
               color: Colors.blueGrey,
               size: 30,
             ),

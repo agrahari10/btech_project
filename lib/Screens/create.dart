@@ -424,7 +424,7 @@ class _CreateAccountState extends State<CreateAccount> {
                                 ? () async {
                               FocusScope.of(context).requestFocus(new FocusNode());
                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                duration: Duration(minutes: 1),
+                                duration: Duration(seconds: 15),
                                 content: Row(
                                   children: [
                                     Expanded(child: Text('Registering...')),

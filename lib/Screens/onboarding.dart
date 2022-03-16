@@ -5,9 +5,14 @@ import 'package:flutter/material.dart';
 import 'login.dart';
 
 
-class Onboarding extends StatelessWidget {
+class Onboarding extends StatefulWidget {
 const Onboarding({Key? key}) : super(key: key);
 
+  @override
+  State<Onboarding> createState() => _OnboardingState();
+}
+
+class _OnboardingState extends State<Onboarding> {
 @override
 Widget build(BuildContext context) {
   Size size = MediaQuery.of(context).size;
@@ -80,7 +85,7 @@ Widget build(BuildContext context) {
                     Text('and',style: KtextStyle,),
                     Text('Privacy Policy',style: KtextStyle.copyWith(color: Color(0xffC91010)),),
                     SizedBox(
-                      height: size.height*0.08,
+                      height: size.height*0.04,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
