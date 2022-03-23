@@ -1,7 +1,7 @@
   import 'package:flutter/material.dart';
 
 
-class CustomTextField extends StatelessWidget {
+class CustomTextField extends StatefulWidget {
   final Function(String) onSaved;
   final String regEx;
   final String hintText;
@@ -15,16 +15,21 @@ class CustomTextField extends StatelessWidget {
       });
 
   @override
+  State<CustomTextField> createState() => _CustomTextFieldState();
+}
+
+class _CustomTextFieldState extends State<CustomTextField> {
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
       // keyboardType: ,
-      onSaved: (_value) => onSaved(_value!),
+      onSaved: (_value) => widget.onSaved(_value!),
       cursorColor: Colors.white,
       style: TextStyle(color: Colors.black),
-      obscureText: obscureText,
+      obscureText: widget.obscureText,
       validator: (_value) {
         // return _value;
-        return RegExp(regEx).hasMatch(_value!) ? null : 'Enter a valid Input';
+        return RegExp(widget.regEx).hasMatch(_value!) ? null : 'Enter a valid Input';
       },
       decoration: InputDecoration(
         // fillColor: Colors.black,
@@ -34,7 +39,7 @@ class CustomTextField extends StatelessWidget {
             borderRadius: BorderRadius.circular(8.0),
             borderSide: BorderSide.none,
           ),
-          hintText: hintText,
+          hintText: widget.hintText,
           hintStyle: TextStyle(color: Colors.black)),
     );
   }

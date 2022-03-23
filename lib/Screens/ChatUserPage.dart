@@ -101,9 +101,6 @@ class _UsersPageState extends State<UsersPage> {
           return ListView.builder(
             itemCount: _users.length,
             itemBuilder: (BuildContext _context, int _index) {
-              // return Text("User $_index");
-              // print(_authh);
-              // print('');
               print(_users[_index].email);
               print('SSS'*100);
               if (_authh?.email != _users[_index].email){

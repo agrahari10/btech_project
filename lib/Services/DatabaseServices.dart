@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:btech_project/Models/Chat_message.dart';
 import 'package:btech_project/Models/Chat_user.dart';
+import 'package:btech_project/Models/PostStory.dart';
 // import 'package:chat_system/Models/Chat_message.dart';
 // import 'package:chat_system/Models/chat_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,66 +13,34 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 const String USER_COLLECTION = "users";
 const String CHAT_COLLECTION = "Chats";
 const String MESSAGE_COLLECTION = "messages";
+const String POST_COLLECTION = "postStories";
 
 class DatabaseServices {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance.currentUser;
-  late ChatUser thisUser;
-  // DatabaseServices() {
-  //   currentUser(_auth!.uid).then((value) {
-  //     thisUser = value;
-  //   });
-  // }
-
-  // ChatUser get getCurrentUser => thisUser;
-  ChatUser getCurrentUser() {
+   ChatUser? thisUser;
+  ChatUser? getCurrentUser(){
     return thisUser;
   }
-
-  // Future<void> createUser(
-  //   String _uid,
-  //   String _email,
-  //   String _name,
-  //   String _imageUrl,
-  // ) async {
-  //   try {
-  //     await _db.collection(USER_COLLECTION).doc(_uid).set({
-  //       "email": _email,
-  //       "name": _name,
-  //       "last_active": DateTime.now().toUtc(),
-  //       "image": _imageUrl,
-  //     });
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
-
   Future<DocumentSnapshot> getUser(String _uid) {
-    //  print(_auth!.email);
       print('get User');
-     // DocumentSnapshot document = _db.collection(USER_COLLECTION).doc(_uid).get();
-     // if {
-
-     // }
+    
     return _db.collection(USER_COLLECTION).doc(_uid).get();
   }
 
-  // Future<DocumentSnapshot> currentUser(String? _uid) async{
-  //   Query _queryy = _db.collection(USER_COLLECTION).where(_uid!);
-  //   print(_queryy.get());
-  //   print("Abcd"*100);
-  //   var doc =await _queryy.get();
-  //   var data = doc.docs[0].data()!;
-  //   print(data);
-  // Map<String, dynamic> _userData =
-  //                   _queryy.data as Map<String, dynamic>;
-  //                   _userData["uid"] = doc.;
-  //               _members.add(
-  //                 ChatUser.fromJSON(_userData),
-  //               );
+  
 
-  //   // return ChatUser(uid: uid, imageURL: data., email: email, lastActive: lastActive, name: name)
-  // }
+  Future<void> addPost(String _uuid, PostStories _postStories) async {
+    try {
+      print('kkkkkk'*100);
+      await _db
+          // .doc(_uuid)
+          .collection("Stories")
+          .add(_postStories.toJson());
+    } catch (e) {
+      print(e);
+    }
+  }
   Future<QuerySnapshot> getUsers({String? name}) {
     print(_auth!.email);
     print('900'*100);
@@ -86,16 +55,10 @@ class DatabaseServices {
   }
 
   Stream<QuerySnapshot> getChatsForUser(String _uid) {
-    // print('object'*100);
-    // print(_db
-    //     .collection(CHAT_COLLECTION)
-    //     .where('members', arrayContains: _uid)
-    //     .snapshots());
     return _db
         .collection(CHAT_COLLECTION)
         .where(
           'members',
-          // isNotEqualTo: _auth!.email,
           arrayContains: _uid,
         )
         .snapshots();

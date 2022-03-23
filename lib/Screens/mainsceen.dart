@@ -179,7 +179,7 @@ class _MainScreenState extends State<MainScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.edit_note_sharp,
+              Icons.edit,
               color: Colors.blueGrey,
               size: 30,
             ),
@@ -193,9 +193,12 @@ class _MainScreenState extends State<MainScreen> {
 
         ],
         onTap: (index) {
-          setState(() {
+          if(mounted){
+            setState(() {
             _selectedIndex = index;
           });
+          }
+          
 
         },
       ),

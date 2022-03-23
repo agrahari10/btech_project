@@ -21,7 +21,7 @@ enum AppState {
 class UserRepository with ChangeNotifier {
   late final NavigationServices _navigationServices;
   late final DatabaseServices _databaseServices;
-  FirebaseAuth _auth;
+  FirebaseAuth? _auth;
   var _user;
   FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -32,18 +32,25 @@ class UserRepository with ChangeNotifier {
   AppState _appState = AppState.initial;
 
   AppState get appState => _appState;
-  // get user => _user;
+  // get usser => _user;
+  FirebaseAuth? get usser{
+    print(_auth);
+    print("**^&^"*100);
+    return _auth;
+  }
 
-  UserRepository() : _auth = FirebaseAuth.instance {
+  UserRepository(){
+    _auth = FirebaseAuth.instance;
     _navigationServices = GetIt.instance.get<NavigationServices>();
     _databaseServices = GetIt.instance<DatabaseServices>();
     print('*' * 100);
     print('user repository initialised');
     print('*' * 100);
     print(_auth);
+    print("--0"*100);
     // _appState = AppState.unauthenticated;
 
-    _auth.authStateChanges().listen((firebaseUser) async {
+    _auth!.authStateChanges().listen((firebaseUser) async {
       if (firebaseUser == null) {
         _appState = AppState.unauthenticated;
 
@@ -56,8 +63,9 @@ class UserRepository with ChangeNotifier {
         _databaseServices.getUser(firebaseUser.uid).then(
           (_snapshot) {
             print(_snapshot.data());
-            Map<String, dynamic> _userData =
-                _snapshot.data()! as Map<String, dynamic>;
+            if (_snapshot.data()!= null){
+              Map<String, dynamic> _userData =
+                _snapshot.data() as Map<String, dynamic>;
             print("??" * 20);
             print(_userData);
 
@@ -80,7 +88,10 @@ class UserRepository with ChangeNotifier {
             print('&' * 100);
             print(user.toMap());
             // _navigationServices.removAndNavigateToRoute('/home'); //  naviate to home after login
-          },
+          }
+
+            }
+            
         );
         print('%' * 100);
         print('User loggedIN');
@@ -99,7 +110,7 @@ class UserRepository with ChangeNotifier {
 
 
   Future<dynamic> login(String email, String password) async {
-    var user = await _auth
+    var user = await _auth!
         .signInWithEmailAndPassword(email: email, password: password)
         .catchError((error) {
       print(error.code);
@@ -125,7 +136,7 @@ class UserRepository with ChangeNotifier {
     required File image,
   }) async {
     _appState = AppState.authenticating;
-    var user = await _auth.createUserWithEmailAndPassword(
+    var user = await _auth!.createUserWithEmailAndPassword(
         email: email, password: password);
 
     // upload photo to firebase storage
@@ -166,7 +177,7 @@ class UserRepository with ChangeNotifier {
   }
 
   Future logout() async {
-    await _auth.signOut();
+    await _auth!.signOut();
 
     _appState = AppState.unauthenticated;
     notifyListeners();

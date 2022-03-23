@@ -37,7 +37,7 @@ class _CreateAccountState extends State<CreateAccount> {
     super.dispose();
   }
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    Size size = MediaQuery.of(context).size*0.9;
     final _userRepository = Provider.of<UserRepository>(context);
     void _showErrorSnackBar({required String errorCode}) {
       String errorText;
@@ -91,7 +91,7 @@ class _CreateAccountState extends State<CreateAccount> {
             children: [
               Container(
                 color: Colors.white,
-                height: size.height * 0.16,
+                height: size.height*0.16,
                 width: size.width,
                 child: Padding(
                   padding: EdgeInsets.all(size.height*0.02),
@@ -114,8 +114,8 @@ class _CreateAccountState extends State<CreateAccount> {
               ),
               SingleChildScrollView(
                 child: Container(
-                  height: size.height*1.2,
-                  width: size.width,
+                  height: size.height*1.4,
+                  width: size.width*1.2,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(45.0),
@@ -453,8 +453,8 @@ class _CreateAccountState extends State<CreateAccount> {
                                 : () {
                               if (imageFilePath.isEmpty)
                                 Fluttertoast.showToast(msg: 'Upload photo');
-                              else
-                                Fluttertoast.showToast(msg: 'Enter all fields');
+                              // else
+                              //   Fluttertoast.showToast(msg: 'Enter all fields');
                             },
                           ),
                         ),

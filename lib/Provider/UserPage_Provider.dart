@@ -11,8 +11,8 @@ import 'package:get_it/get_it.dart';
 
 class UsersPageProvider extends ChangeNotifier {
   UserRepository _auth;
-  late DatabaseServices _database;
-  late NavigationServices _navigation;
+  DatabaseServices? _database;
+  NavigationServices? _navigation;
 
   List<ChatUser>? users;
   late List<ChatUser> _selectedUsers;
@@ -37,7 +37,7 @@ class UsersPageProvider extends ChangeNotifier {
     _selectedUsers = [];
     // String currentUserId = FirebaseAuth.instance.currentUser!.uid;
     try {
-      _database.getUsers(name: name).then((_snapshot) {
+      _database!.getUsers(name: name).then((_snapshot) {
         // var currentUser;
         // if ()
         // print(_auth.user);
@@ -81,7 +81,7 @@ class UsersPageProvider extends ChangeNotifier {
           _selectedUsers.map((_user) => _user.uuid).toList();
       _membersIds.add(_auth.user.uuid);
       bool _isGroup = _selectedUsers.length > 1;
-      DocumentReference? doc = await _database.createChat({
+      DocumentReference? doc = await _database!.createChat({
         "is_group": _isGroup,
         "is_activity": false,
         "members": _membersIds,
@@ -89,7 +89,7 @@ class UsersPageProvider extends ChangeNotifier {
       List<ChatUser> _members = [];
       for (var _uid in _membersIds) {
         // if ( )
-        DocumentSnapshot _userSnapShot = await _database.getUser(_uid);
+        DocumentSnapshot _userSnapShot = await _database!.getUser(_uid);
         print(_userSnapShot);
         print('ddf'*10);
         // if(_userSnapShot != _auth.user){
@@ -110,7 +110,7 @@ class UsersPageProvider extends ChangeNotifier {
       );
       _selectedUsers = [];
       notifyListeners();
-      _navigation.navigateToPage(_chatPage);
+      _navigation!.navigateToPage(_chatPage);
     } catch (e) {
       print(e);
     }

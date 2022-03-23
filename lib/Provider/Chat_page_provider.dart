@@ -16,18 +16,18 @@ import 'package:get_it/get_it.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 
 class ChatPageProvider extends ChangeNotifier {
-  late DatabaseServices _db;
-  late CloudStorageServices _storage;
-  late MediaServices _media;
-  late NavigationServices _navigation;
+  DatabaseServices? _db;
+  CloudStorageServices? _storage;
+  MediaServices? _media;
+  NavigationServices? _navigation;
 
   UserRepository _auth;
   ScrollController _messagesListViewController;
   String _chatId;
   List<ChatMessage>? messages;
-  late StreamSubscription _messagesStream;
-  late StreamSubscription _keyboardVisbilityStream;
-  late KeyboardVisibilityController _keyboardVisibilityController;
+   StreamSubscription? _messagesStream;
+  StreamSubscription? _keyboardVisbilityStream;
+  KeyboardVisibilityController? _keyboardVisibilityController;
   String? _message;
   String get message {
     return message;
@@ -36,6 +36,8 @@ class ChatPageProvider extends ChangeNotifier {
   List<Chat>? get chats => null;
 
   void set message(String _value) {
+    print('message');
+    print('IO'*100);
     _message = _value;
   }
 
@@ -50,14 +52,14 @@ class ChatPageProvider extends ChangeNotifier {
   }
   @override
   void dispose() {
-    // _messagesStream.cancel();
+    _messagesStream!.cancel();
     // TODO: implement dispose
     super.dispose();
   }
 
   void listenToMessage() {
     try {
-      _messagesStream = _db.streamMessageForChat(_chatId).listen((_snapshot) {
+      _messagesStream = _db?.streamMessageForChat(_chatId).listen((_snapshot) {
         List<ChatMessage> _message = _snapshot.docs.map(
           (_m){
             Map<String, dynamic> _messageData =
@@ -84,8 +86,8 @@ class ChatPageProvider extends ChangeNotifier {
 
   void listenToKeyboardChanges() {
     _keyboardVisbilityStream =
-        _keyboardVisibilityController.onChange.listen((_event) {
-      _db.updateChatData(_chatId, {"is_activity": _event});
+        _keyboardVisibilityController!.onChange.listen((_event) {
+      _db?.updateChatData(_chatId, {"is_activity": _event});
     });
   }
 
@@ -99,15 +101,15 @@ class ChatPageProvider extends ChangeNotifier {
         sentTime: DateTime.now(),
       );
       // print(_messageToSend);
-      _db.addMessageToChat(_chatId, _messageToSend);
+      _db?.addMessageToChat(_chatId, _messageToSend);
     }
   }
 
   void sendImageMessage() async {
     try {
-      PlatformFile? _file = await _media.pickImageFromLibrary();
+      PlatformFile? _file = await _media!.pickImageFromLibrary();
       if (_file != null) {
-        String? _dowanloadURL = await _storage.saveChatImageToStorage(
+        String? _dowanloadURL = await _storage!.saveChatImageToStorage(
             _chatId, _auth.user.uuid, _file);
         ChatMessage _messageToSend = ChatMessage(
           content: _dowanloadURL!,
@@ -115,7 +117,7 @@ class ChatPageProvider extends ChangeNotifier {
           senderID: _auth.user.uuid,
           sentTime: DateTime.now(),
         );
-        _db.addMessageToChat(_chatId, _messageToSend);
+        _db!.addMessageToChat(_chatId, _messageToSend);
       }
     } catch (e) {
       print(e);
@@ -124,10 +126,10 @@ class ChatPageProvider extends ChangeNotifier {
 
   void deleteChat() {
     goBack();
-    _db.deleteChat(_chatId);
+    _db!.deleteChat(_chatId);
   }
 
   void goBack() {
-    _navigation.goBack();
+    _navigation!.goBack();
   }
 }

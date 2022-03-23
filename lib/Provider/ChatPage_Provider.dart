@@ -17,11 +17,11 @@ class ChatPageProvider extends ChangeNotifier {
   UserRepository _auth;
   String currentUserId = FirebaseAuth.instance.currentUser!.uid;
 
-  late DatabaseServices _db;
+ DatabaseServices? _db;
 
   List<Chat>? chats;
 
-  late StreamSubscription _chatsStream;
+  StreamSubscription? _chatsStream;
   
 
   ChatPageProvider(
@@ -33,14 +33,14 @@ class ChatPageProvider extends ChangeNotifier {
   @override
   void dispose() {
     // TODO: implement dispose
-    _chatsStream.cancel();
+    _chatsStream!.cancel();
     super.dispose();
   }
 
   void getChats() async {
     try {
       _chatsStream =
-          _db.getChatsForUser(_auth.user.uuid).listen((_snapshot) async {
+          _db!.getChatsForUser(_auth.user.uuid).listen((_snapshot) async {
         chats = await Future.wait(
           _snapshot.docs.map(
             (_d) async {
@@ -50,13 +50,7 @@ class ChatPageProvider extends ChangeNotifier {
               //get user in chat
               List<ChatUser> _members = [];
               for (var uuid in _chatData["members"]) {
-                // print(_chatData["members"]);
-                // print('()'*100);
-                // if (currentUserId != _chatData["members"]) {
-                print("%%%5"* 100);
-
-                // if (_uid != currentUserId){
-                DocumentSnapshot _userSnapshot = await _db.getUser(uuid);
+                DocumentSnapshot _userSnapshot = await _db!.getUser(uuid);
 
                 Map<String, dynamic> _userData =
                 _userSnapshot.data()! as Map<String, dynamic>;
@@ -64,22 +58,16 @@ class ChatPageProvider extends ChangeNotifier {
                 print(_userData['uuid']);
 
                 print(_userSnapshot.id);
-                print('HHHHHH'*100);
-                print(_userData);
                 print(ChatUser.fromJSON(_userData));
-                print('Hello'*100);
+
                 _members.add(
                   ChatUser.fromJSON(_userData),
                 );
-                // print('^%'*500);
-                // print(_userData);
-                // }
-              // }
             }
               // get Last Message  for Chat
               List<ChatMessage> _messages = [];
               QuerySnapshot _chatMessage =
-                  await _db.getLastMessageForChat(_d.id);
+                  await _db!.getLastMessageForChat(_d.id);
               if (_chatMessage.docs.isNotEmpty) {
                 Map<String, dynamic> _messageData =
                     _chatMessage.docs.first.data()! as Map<String, dynamic>;

@@ -1,117 +1,79 @@
-import 'dart:io';
-
-import 'package:btech_project/Page/profile.dart';
-import 'package:btech_project/widgets/roundedButton.dart';
+import 'package:btech_project/Provider/PostImage_provider.dart';
+import 'package:btech_project/Services/CloudServices.dart';
+import 'package:btech_project/Services/MediaServices.dart';
+import 'package:btech_project/repository/Userrepositories.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+
 
 class PostPage extends StatefulWidget {
-  const PostPage({Key? key}) : super(key: key);
+  const PostPage({ Key? key }) : super(key: key);
 
   @override
   State<PostPage> createState() => _PostPageState();
 }
 
 class _PostPageState extends State<PostPage> {
+
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-        ),
-        body: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              PostImageWithCaption(),
-              Padding(
-                padding: const EdgeInsets.only(left: 20.0),
-                child: TextField(
-                  decoration: InputDecoration(
-                      border: InputBorder.none,
-                      labelText: 'Enter Caption for your Story',
-                      hintText: ''),
-                ),
-              ),
-              RoundedButton(
-                  width: size.width * 0.30,
-                  height: size.height * 0.06,
-                  name: 'Submit',
-                  onPressed: (){
-                    Navigator.pop(context);
-                  },),
-            ],
-          ),
-        ),
-      ),
+    UserRepository _auth = Provider.of<UserRepository>(context);
+    return MultiProvider(providers: [
+      ChangeNotifierProvider(create: (_) => PostStory(_auth))
+    ],
+      child: PostAcess(),
     );
   }
+}
 
-  Widget PostImageWithCaption() {
-    Size size = MediaQuery.of(context).size;
-    return Container(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+class PostAcess extends StatefulWidget {
+  const PostAcess({ Key? key }) : super(key: key);
+
+  @override
+  State<PostAcess> createState() => _PostAcessState();
+}
+
+class _PostAcessState extends State<PostAcess> {
+  CloudStorageServices? _cloudStorageServices;
+  PlatformFile? _profileImage;
+  @override
+  Widget build(BuildContext context) {
+    _cloudStorageServices =
+        GetIt.instance.get<CloudStorageServices>();
+    PostStory _postProvider = context.watch<PostStory>();
+    return Scaffold(
+      body: Column(
         children: [
-          GestureDetector(
-            onTap: () async {
-              var image = await ImagePicker()
-                  .getImage(
-                      source: ImageSource.gallery,
-                      maxHeight: 600,
-                      maxWidth: 600)
-                  .then((value) {
-                if (mounted)
-                  setState(() {
-                    print(value?.path);
-                    print('&&&&&&&&&&&&&&\n%%%%%%%%%%%%');
-                    imageFilePath = value != null ? value.path : '';
-                    print(imageFilePath);
-                  });
-              });
-            },
-            child: imageFilePath.isEmpty
-                ? Container(
-                    height: 300,
-                    width: 300,
-                    child: Icon(Icons.add_a_photo),
-                    decoration: BoxDecoration(
-                      // borderRadius: BorderRadius.circular(size.width),
-                      color: Color(0xffFFFFFF),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black38,
-                          blurRadius: 5,
-                          spreadRadius: 5,
-                        ),
-                      ],
-                    ),
-                  )
-                : Container(
-                    height: 300,
-                    width: 300,
-                    decoration: BoxDecoration(
-                      // borderRadius: BorderRadius.circular(size.width),
-                      image: DecorationImage(
-                        fit: BoxFit.fill,
-                        image: FileImage(
-                          File(imageFilePath),
-                        ),
-                      ),
-                    ),
-                  ),
-          ),
-
-// )
-        ],
+          Container(
+            color: Colors.red,
+            height: 200,
+            width: 200,
+            child: GestureDetector(onTap: (){
+              GetIt.instance.get<MediaServices>().pickImageFromLibrary().then((_file) {
+        setState(() {
+          _profileImage = _file;
+        });
+      });
+            })),
+                  
+          
+          Container(
+          child: Center(child: Container(child: TextButton(onPressed: (){
+            print(_profileImage);
+            _postProvider.postMessage(_profileImage);
+            print('^&'*200);
+            Fluttertoast.showToast(msg: 'Image Post Successfully');
+            Navigator.of(context).pop();
+            // _postProvider.postMessage();
+          },child: Text('Submit'),))),
       ),
+        ],),
     );
   }
 }

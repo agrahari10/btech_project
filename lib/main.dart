@@ -9,6 +9,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'Provider/PostImage_provider.dart';
 import 'Screens/login.dart';
 import 'Screens/onboarding.dart';
 import 'Services/NavigationServices.dart';
@@ -26,6 +27,7 @@ Future<void> main()async {
       MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => UserRepository()),
+          // ChangeNotifierProvider(create: (_) => PostStorys(A))
         ],
         child: MyApp(),
       ),);

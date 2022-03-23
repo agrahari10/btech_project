@@ -20,11 +20,11 @@ class _ChatPageState extends State<ChatPage> {
   late double _deviceHeight;
   late double _deviceWidth;
 
-  late UserRepository _auth;
-  late ChatPageProvider _pageProvider;
+   UserRepository? _auth;
+   ChatPageProvider? _pageProvider;
 
-  late GlobalKey<FormState> _messageFormState;
-  late ScrollController _messageListViewController;
+   GlobalKey<FormState>? _messageFormState;
+   ScrollController? _messageListViewController;
   @override
   void initState() {
     _messageFormState = GlobalKey<FormState>();
@@ -43,7 +43,7 @@ class _ChatPageState extends State<ChatPage> {
       providers: [
         ChangeNotifierProvider<ChatPageProvider>(
             create: (_) => ChatPageProvider(
-                this.widget.chat.uid, _auth, _messageListViewController)),
+                this.widget.chat.uid, _auth!, _messageListViewController!)),
       ],
       child: _buildUI(),
     );
@@ -74,14 +74,14 @@ class _ChatPageState extends State<ChatPage> {
                       icon: Icon(Icons.delete),
                       color: Color.fromRGBO(0, 82, 218, 1.0),
                       onPressed: () {
-                        _pageProvider.deleteChat();
+                        _pageProvider!.deleteChat();
                       },
                     ),
                     secondaryAction: IconButton(
                       icon: Icon(Icons.arrow_back),
                       color: Color.fromRGBO(0, 82, 218, 1.0),
                       onPressed: () {
-                        _pageProvider.goBack();
+                        _pageProvider!.goBack();
                       },
                     ),
                   ),
@@ -97,8 +97,8 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget _messagesListView() {
-    if (_pageProvider.messages != null) {
-      if (_pageProvider.messages!.length != 0) {
+    if (_pageProvider!.messages != null) {
+      if (_pageProvider!.messages!.length != 0) {
         return Container(
           height: _deviceHeight*0.70,
           // width: _deviceWidth * ,
@@ -106,10 +106,10 @@ class _ChatPageState extends State<ChatPage> {
             height: 400,
             child: ListView.builder(
               controller: _messageListViewController,
-              itemCount: _pageProvider.messages!.length,
+              itemCount: _pageProvider!.messages!.length,
               itemBuilder: (BuildContext _context, int _index) {
-                ChatMessage _message = _pageProvider.messages![_index];
-                bool _isOwnMessage = _message.senderID == _auth.user.uuid;
+                ChatMessage _message = _pageProvider!.messages![_index];
+                bool _isOwnMessage = _message.senderID == _auth!.user.uuid;
                 return CustomChatListViewTile(
                   deviceHeight: _deviceHeight * 1.2,
                   width: _deviceWidth,
@@ -180,7 +180,7 @@ class _ChatPageState extends State<ChatPage> {
           hintText: "Type a message",
           obscureText: false,
           onSaved: (_value) {
-            _pageProvider.message = _value;
+            _pageProvider!.message = _value;
           },
           regEx: r"^(?!\s*$).+",
         ));
@@ -192,10 +192,10 @@ class _ChatPageState extends State<ChatPage> {
       height: _size,
       width: _size,
       child: IconButton(onPressed: (){
-        if(_messageFormState.currentState!.validate()){
-          _messageFormState.currentState!.save();
-          _pageProvider.sendTextMessage();
-          _messageFormState.currentState!.reset();  
+        if(_messageFormState!.currentState!.validate()){
+          _messageFormState!.currentState!.save();
+          _pageProvider!.sendTextMessage();
+          _messageFormState!.currentState!.reset();  
         }
       }, icon: Icon(Icons.send)),
     );
@@ -208,7 +208,7 @@ class _ChatPageState extends State<ChatPage> {
       child: FloatingActionButton(
         backgroundColor: Color.fromRGBO(0, 82, 218, 1.0),
         onPressed: (){
-          _pageProvider.sendImageMessage();
+          _pageProvider!.sendImageMessage();
         },
         child: Icon(Icons.camera_enhance,
       ),
