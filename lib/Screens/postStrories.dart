@@ -4,7 +4,6 @@ import 'package:btech_project/Provider/PostImage_provider.dart';
 import 'package:btech_project/Services/CloudServices.dart';
 import 'package:btech_project/Services/MediaServices.dart';
 import 'package:btech_project/repository/Userrepositories.dart';
-import 'package:btech_project/widgets/roundedButton.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +44,6 @@ class _PostAcessState extends State<PostAcess> {
   PickedFile? imageFile;
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     _cloudStorageServices = GetIt.instance.get<CloudStorageServices>();
     PostStory _postProvider = context.watch<PostStory>();
     return SafeArea(
@@ -81,23 +79,22 @@ class _PostAcessState extends State<PostAcess> {
             Container(
               child: Center(
                   child: Container(
-                      child:RoundedButton(height: size.height*0.06,width: size.width*0.4,name: 'Post Story',onPressed: (){},)
-              //         TextButton(
-              //           style: TextButton.styleFrom(
-              //             primary: Colors.white,
-              //             backgroundColor: Colors.blue,
+                      child: 
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          primary: Colors.white,
+                          backgroundColor: Colors.blue,
                           
-              //           ),
-              //   onPressed: () {
-              //     _postProvider.postMessage(imageFile);
-              //     print('^&' * 200);
-              //     print(imageFile);
-              //     Fluttertoast.showToast(msg: 'Image Post Successfully');
-              //     Navigator.of(context).pop();
-              //   },
-              //   child: Text('Submit'),
-              // ),
-              )),
+                        ),
+                onPressed: () {
+                  _postProvider.postMessage(imageFile);
+                  print('^&' * 200);
+                  print(imageFile);
+                  Fluttertoast.showToast(msg: 'Image Post Successfully');
+                  Navigator.of(context).pop();
+                },
+                child: Text('Post Story'),
+              ),)),
             ),
           ],
         ),
