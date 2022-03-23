@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:btech_project/Provider/PostImage_provider.dart';
 import 'package:btech_project/Services/CloudServices.dart';
 import 'package:btech_project/Services/MediaServices.dart';
 import 'package:btech_project/repository/Userrepositories.dart';
+import 'package:btech_project/widgets/roundedButton.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -11,29 +14,26 @@ import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
-
 class PostPage extends StatefulWidget {
-  const PostPage({ Key? key }) : super(key: key);
+  const PostPage({Key? key}) : super(key: key);
 
   @override
   State<PostPage> createState() => _PostPageState();
 }
 
 class _PostPageState extends State<PostPage> {
-
   @override
   Widget build(BuildContext context) {
     UserRepository _auth = Provider.of<UserRepository>(context);
-    return MultiProvider(providers: [
-      ChangeNotifierProvider(create: (_) => PostStory(_auth))
-    ],
+    return MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => PostStory(_auth))],
       child: PostAcess(),
     );
   }
 }
 
 class PostAcess extends StatefulWidget {
-  const PostAcess({ Key? key }) : super(key: key);
+  const PostAcess({Key? key}) : super(key: key);
 
   @override
   State<PostAcess> createState() => _PostAcessState();
@@ -42,38 +42,66 @@ class PostAcess extends StatefulWidget {
 class _PostAcessState extends State<PostAcess> {
   CloudStorageServices? _cloudStorageServices;
   PlatformFile? _profileImage;
+  PickedFile? imageFile;
   @override
   Widget build(BuildContext context) {
-    _cloudStorageServices =
-        GetIt.instance.get<CloudStorageServices>();
+    Size size = MediaQuery.of(context).size;
+    _cloudStorageServices = GetIt.instance.get<CloudStorageServices>();
     PostStory _postProvider = context.watch<PostStory>();
-    return Scaffold(
-      body: Column(
-        children: [
-          Container(
-            color: Colors.red,
-            height: 200,
-            width: 200,
-            child: GestureDetector(onTap: (){
-              GetIt.instance.get<MediaServices>().pickImageFromLibrary().then((_file) {
-        setState(() {
-          _profileImage = _file;
-        });
-      });
-            })),
-                  
-          
-          Container(
-          child: Center(child: Container(child: TextButton(onPressed: (){
-            print(_profileImage);
-            _postProvider.postMessage(_profileImage);
-            print('^&'*200);
-            Fluttertoast.showToast(msg: 'Image Post Successfully');
-            Navigator.of(context).pop();
-            // _postProvider.postMessage();
-          },child: Text('Submit'),))),
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+              child: Container(
+                  height: 450,
+                  width: 500,
+                  child: GestureDetector(
+                      onTap: () async {
+                        var pickedFile = await ImagePicker().getImage(
+                            source: ImageSource.gallery, imageQuality: 25);
+                        setState(() {
+                          imageFile = pickedFile!;
+                        });
+                      },
+                      child: imageFile != null
+                          ? Container(
+                              child: Image.file(
+                                File(imageFile!.path),
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                              ),
+                            )
+                          : Container(
+                              color: Colors.grey[100],
+                            ))),
+            ),
+            Container(
+              child: Center(
+                  child: Container(
+                      child:RoundedButton(height: size.height*0.06,width: size.width*0.4,name: 'Post Story',onPressed: (){},)
+              //         TextButton(
+              //           style: TextButton.styleFrom(
+              //             primary: Colors.white,
+              //             backgroundColor: Colors.blue,
+                          
+              //           ),
+              //   onPressed: () {
+              //     _postProvider.postMessage(imageFile);
+              //     print('^&' * 200);
+              //     print(imageFile);
+              //     Fluttertoast.showToast(msg: 'Image Post Successfully');
+              //     Navigator.of(context).pop();
+              //   },
+              //   child: Text('Submit'),
+              // ),
+              )),
+            ),
+          ],
+        ),
       ),
-        ],),
     );
   }
 }

@@ -12,6 +12,7 @@ import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:geolocator/geolocator.dart';
 
 class PostStory extends ChangeNotifier {
   DatabaseServices? _db;
@@ -65,4 +66,19 @@ class PostStory extends ChangeNotifier {
       _db?.addPost(_auth!.user.uuid, _story);
     }
   }
-}
+
+  // Future<Position> getCurrentLocation() async {
+  //   Position _currentLocation;
+  //   var position = await GeolocatorPlatform.instance
+  //       .getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+  //   // final Geolocator geolocator = Geolocator().forceAndroidLocationManager;
+  //   // await geolocator
+  //   //     .getCurrentPosition(
+  //   //     desiredAccuracy: LocationAccuracy.best,
+  //   //     locationPermissionLevel: GeolocationPermission.locationWhenInUse)
+  //   //     .then((Position position) {
+  //   //   _currentLocation = position;
+  //   });
+  //   return _currentLocation;
+  }
+

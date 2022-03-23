@@ -29,10 +29,9 @@ class CloudStorageServices{
     }
 
   }
-   Future<String?> saveUserImageToStorage(String _userID,PlatformFile _file)async{
-    // File file = File(filePath);
+   Future<String?> saveUserImageToStorage(String _userID,PickedFile _file)async{
     try{
-      Reference _ref = _storage.ref().child('Postimages/$_userID/${Timestamp.now().millisecondsSinceEpoch}.${_file.extension}');
+      Reference _ref = _storage.ref().child('Postimages/$_userID/${Timestamp.now().millisecondsSinceEpoch}');
       
 
       // ignore: unused_local_variable
@@ -44,23 +43,4 @@ class CloudStorageServices{
     }
 
   }
-//   Future<String?> saveUserImageToStorage(String _userID,PlatformFile _file)async{
-//     // File file = File(filePath);
-//     try{
-//       print('ref');
-//       print('ffffff'*100);
-//       Reference _ref = _storage.ref().child('postImages/$_userID/${Timestamp.now().millisecondsSinceEpoch}.${_file.extension}');
-//       // Reference _ref = _storage.ref().child('postImages/$_userID/${Timestamp.now().millisecondsSinceEpoch}.${_file.extension}');
-      
-
-//       // ignore: unused_local_variable
-//       UploadTask _task = _ref.putFile(File(_file.toString()),);
-//       return await _task.then((_result) => _result.ref.getDownloadURL());
-//     }
-//     catch(e){
-//       print(e);
-//     }
-
-//   }
-// }
 }
