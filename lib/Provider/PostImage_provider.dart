@@ -12,7 +12,8 @@ import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:geolocator/geolocator.dart';
+
+
 
 class PostStory extends ChangeNotifier {
   DatabaseServices? _db;
@@ -20,6 +21,7 @@ class PostStory extends ChangeNotifier {
   UserRepository? _auth;
   MediaServices? _media;
   NavigationServices? _navigation;
+  
 
   String? _storyText;
   String get story {
@@ -28,6 +30,8 @@ class PostStory extends ChangeNotifier {
 
   void set story(String _value) {
     _storyText = _value;
+    print(_storyText);
+    print('^^'*100);
   }
   
   PostStory(this._auth) {
@@ -55,8 +59,7 @@ class PostStory extends ChangeNotifier {
   }
 
 
-  void sendTextMessage() {
-    print(_storyText);
+  postText()async {
     if (_storyText != null) {
       PostStories _story = PostStories(
           content: _storyText!,
@@ -67,18 +70,6 @@ class PostStory extends ChangeNotifier {
     }
   }
 
-  // Future<Position> getCurrentLocation() async {
-  //   Position _currentLocation;
-  //   var position = await GeolocatorPlatform.instance
-  //       .getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
-  //   // final Geolocator geolocator = Geolocator().forceAndroidLocationManager;
-  //   // await geolocator
-  //   //     .getCurrentPosition(
-  //   //     desiredAccuracy: LocationAccuracy.best,
-  //   //     locationPermissionLevel: GeolocationPermission.locationWhenInUse)
-  //   //     .then((Position position) {
-  //   //   _currentLocation = position;
-  //   });
-  //   return _currentLocation;
-  }
-
+  
+  
+}

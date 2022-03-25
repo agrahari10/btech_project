@@ -1,4 +1,5 @@
 import 'package:btech_project/Provider/PostImage_provider.dart';
+import 'package:btech_project/Screens/TextPost.dart';
 import 'package:btech_project/Screens/postStrories.dart';
 import 'package:btech_project/Screens/postsection.dart';
 import 'package:btech_project/repository/Userrepositories.dart';
@@ -41,6 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           ActionButton(
             onPressed: (){
+              
+              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => PostTextPage()));  // for post images with caption
 
             },
             icon: const Icon(Icons.post_add),

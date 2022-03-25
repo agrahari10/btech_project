@@ -93,7 +93,7 @@ class _PostAcessState extends State<PostAcess> {
                   Fluttertoast.showToast(msg: 'Image Post Successfully');
                   Navigator.of(context).pop();
                 },
-                child: Text('Post Story'),
+                child: Text('Post'),
               ),)),
             ),
           ],
