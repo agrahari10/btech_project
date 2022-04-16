@@ -7,6 +7,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:geoflutterfire/geoflutterfire.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get_it/get_it.dart';
 
 
@@ -25,7 +27,9 @@ class UserRepository with ChangeNotifier {
   var _user;
   FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  late ChatUser user; 
+  ChatUser? user; 
+  final Geolocator geolocator = Geolocator();
+  final geo = Geoflutterfire();
 
 
   // final GoogleSignIn _googleSignIn;
@@ -38,6 +42,15 @@ class UserRepository with ChangeNotifier {
     print("**^&^"*100);
     return _auth;
   }
+  //  Future<Position?> getCurrentLocation() async {
+  //   Position? _currentLocation;
+  //   await Geolocator
+  //       .getCurrentPosition(desiredAccuracy: LocationAccuracy.best,forceAndroidLocationManager: true)
+  //       .then((Position position) {
+  //     _currentLocation = position;
+  //   });
+  //   return _currentLocation;
+  // }
 
   UserRepository(){
     _auth = FirebaseAuth.instance;
@@ -59,7 +72,7 @@ class UserRepository with ChangeNotifier {
         print('logged In');
         // _user = firebaseUser;
         print("auth state changed");
-        _databaseServices.updateUserlastSeenTime(firebaseUser.uid);
+        // _databaseServices.updateUserlastSeenTime(firebaseUser.uid);
         _databaseServices.getUser(firebaseUser.uid).then(
           (_snapshot) {
             print(_snapshot.data());
@@ -86,7 +99,7 @@ class UserRepository with ChangeNotifier {
               },
             );
             print('&' * 100);
-            print(user.toMap());
+            print(user!.toMap());
             // _navigationServices.removAndNavigateToRoute('/home'); //  naviate to home after login
           }
 
@@ -219,102 +232,56 @@ class UserRepository with ChangeNotifier {
       'photoUrl': imageUrl,
     });
   }
+  //  Future<bool> addTextStory({String? userId}) async {
+  //   bool sent;
+  //   // String storyId = 
+  //   Position? location = await getCurrentLocation();
+  //   GeoFirePoint userLocation =
+  //       geo.point(latitude: location!.latitude, longitude: location.longitude);
 
-  // Future<DocumentSnapshot> getUser(String _uid) {  // get users for all users 
-  //    print(_auth);
-  //     print("7"*100);
-  //    // DocumentSnapshot document = _db.collection(USER_COLLECTION).doc(_uid).get();
-  //    // if {
-
-  //    // }
-  //   return _firestore.collection('users').doc(_uid).get();
-  // }
-
-
-  // Future<QuerySnapshot> getUsers({String? name}) { // search name function 
-  //   // print(_auth!.email); 
-  //   print('900'*100);
-  //   Query _query = _firestore.collection('users').where("name",isNotEqualTo: _auth);
-  //   //  print(_auth!.email);
-  //   if (name != null) {
-  //     _query = _query
-  //         .where("name", isGreaterThanOrEqualTo: name)
-  //         .where("name", isLessThanOrEqualTo: name + "z");
-  //   }
-  //   return _query.get();
-  // }
-
-  // Stream<QuerySnapshot> getChatsForUser(String _uid) {
-  //   // print('object'*100);
-  //   // print(_db
-  //   //     .collection(CHAT_COLLECTION)
-  //   //     .where('members', arrayContains: _uid)
-  //   //     .snapshots());
-  //   return _firestore
-  //       .collection('users')
-  //       .where(
-  //         'members',
-  //         // isNotEqualTo: _auth!.email,
-  //         arrayContains: _uid,
-  //       )
-  //       .snapshots();
-
-  // }
-  //  Future<QuerySnapshot> getLastMessageForChat(String _chatID) { // last message in chat list
-  //   return _firestore
-  //       .collection('users')
-  //       .doc(_chatID)
-  //       .collection('MESSAGE_COLLECTION')        
-  //       .orderBy("sent_time", descending: true)
-  //       .limit(1)
-  //       .get();
-  // }
-  // Stream<QuerySnapshot> streamMessageForChat(String _chatID) { // Message list stream user to user
-  //   return _firestore 
-  //       .collection('users')
-  //       .doc(_chatID)
-  //       .collection('MESSAGE_COLLECTION')
-  //       .orderBy("sent_time", descending: false)
-  //       .snapshots();
-  // }
-
-  //  Future<void> addMessageToChat(String chatID, ChatMessage _message) async {
-  //   try {
-  //     await _firestore
+  //   await _firestore.collection('stories').doc(storyId).set({
+  //     // 'storyId': storyId,
+  //     // 'senderName': user.displayName,
+  //     // 'senderUid': userId,
+  //     // 'senderPhotoUrl': user.photoURL,
+  //     // 'createdAt': DateTime.now(),
+  //     // 'type': 'Text',
+  //     // 'story':
+  //     //     postText, // the actual story (i.e, content) which will be shown on story page
+  //     'likedBy': [],
+  //     'repoetedBy': [],
+  //     'location': userLocation.data,
+  //   }) //storing storyId in user's data
+  //       .then((res) {
+  //     _firestore
   //         .collection('users')
-  //         .doc(chatID)
-  //         .collection('MESSAGE_COLLECTION')
-  //         .add(_message.toJson());
-  //   } catch (e) {
-  //     print(e);
-  //   }
+  //         .doc(user.uuid)
+  //         .collection('stories')
+  //         .doc(storyId)
+  //         .set({
+  //       'createdAt': DateTime.now(),
+  //       'removeAt': DateTime.now().add(Duration(hours: 24)),
+  //     });
+  //     sent = true;
+
+  //     // **************** increase the totalStoryPosted count +1
+  //     _firestore.runTransaction((transaction) async {
+  //       var docRef = _firestore.collection('users').doc(userId);
+  //       var snapshot = await transaction.get(docRef);
+
+  //       int totalStoryPostedCount = snapshot.data()!['totalStoryPosted'] + 1;
+
+  //       transaction.update(docRef, {'totalStoryPosted': totalStoryPostedCount});
+
+  //       return totalStoryPostedCount;
+  //     });
+  //   }).catchError((error) {
+  //     print(error.toString() + 'text story error');
+  //     sent = false;
+  //   });
+  //   return sent!;
   // }
 
-  // Future<void> updateChatData(
-  //     String _chatID, Map<String, dynamic> _data) async {
-  //   try {
-  //     await _firestore.collection('users').doc(_chatID).update(_data);
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
-  // Future<void> deleteChat(String _chatID) async {
-  //   try {
-  //     await _firestore.collection('users').doc(_chatID).delete();
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
-
-  // Future<DocumentReference?> createChat(Map<String, dynamic> _data) async {
-  //   try {
-  //     DocumentReference _chat =
-  //         await _firestore.collection('users').add(_data);
-  //     return _chat;
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
 }
 
  

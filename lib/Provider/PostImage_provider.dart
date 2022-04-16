@@ -45,13 +45,13 @@ class PostStory extends ChangeNotifier {
     try {
       if (_file != null) {
         String? _dowanloadURL =
-            await _storage?.saveUserImageToStorage(_auth!.user.uuid, _file);
+            await _storage?.saveUserImageToStorage(_auth!.user!.uuid, _file);
         PostStories _postStory = PostStories(
             content: _dowanloadURL!,
-            senderID: _auth!.user.uuid,
+            senderID: _auth!.user!.uuid,
             sentTime: DateTime.now(),
             type: PostType.IMAGE);
-            _db!.addPost(_auth!.user.uuid, _postStory);
+            _db!.addPost(_auth!.user!.uuid, _postStory);
       }
     } catch (e) {
       print(e);
@@ -63,10 +63,10 @@ class PostStory extends ChangeNotifier {
     if (_storyText != null) {
       PostStories _story = PostStories(
           content: _storyText!,
-          senderID: _auth!.user.uuid,
+          senderID: _auth!.user!.uuid,
           sentTime: DateTime.now(),
           type: PostType.TEXT);
-      _db?.addPost(_auth!.user.uuid, _story);
+      _db?.addPost(_auth!.user!.uuid, _story);
     }
   }
 

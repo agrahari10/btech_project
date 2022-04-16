@@ -5,7 +5,6 @@ import 'package:btech_project/Services/DatabaseServices.dart';
 import 'package:btech_project/Services/NavigationServices.dart';
 import 'package:btech_project/repository/Userrepositories.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -35,12 +34,8 @@ class UsersPageProvider extends ChangeNotifier {
 
   void getUsers({String? name}) async {
     _selectedUsers = [];
-    // String currentUserId = FirebaseAuth.instance.currentUser!.uid;
     try {
       _database!.getUsers(name: name).then((_snapshot) {
-        // var currentUser;
-        // if ()
-        // print(_auth.user);
         print('+/+'*80);
         users = _snapshot.docs.map((_doc) {
           Map<String, dynamic> _data = _doc.data() as Map<String, dynamic>;
@@ -48,13 +43,8 @@ class UsersPageProvider extends ChangeNotifier {
           print("--/++"*100);
           _data["uid"] = _doc.id;
           print(_data);
-          // print(_)
-          // if (_auth != _data["uid"]) currentUser = _data[currentUserId];
           return ChatUser.fromJSON(_data);
         }).toList();
-        // print(_auth.user);
-        // print('wwww'*100);
-        // users!.remove(_auth.user);
         notifyListeners();
       });
     } catch (e) {
@@ -67,19 +57,15 @@ class UsersPageProvider extends ChangeNotifier {
       _selectedUsers.remove(_user);
     } else {
       _selectedUsers.add(_user);
-      // if (_selectedUsers.contains(_auth.user)){
-      //   _selectedUsers.remove(_user);
-      // }
     }
     notifyListeners();
   }
 
-  void createChat() async {
-    // Create Chat....
+  void createChat() async { // adding chat 
     try {
       List<String> _membersIds =
           _selectedUsers.map((_user) => _user.uuid).toList();
-      _membersIds.add(_auth.user.uuid);
+      _membersIds.add(_auth.user!.uuid);
       bool _isGroup = _selectedUsers.length > 1;
       DocumentReference? doc = await _database!.createChat({
         "is_group": _isGroup,
@@ -92,8 +78,6 @@ class UsersPageProvider extends ChangeNotifier {
         DocumentSnapshot _userSnapShot = await _database!.getUser(_uid);
         print(_userSnapShot);
         print('ddf'*10);
-        // if(_userSnapShot != _auth.user){
-        // ignore: unnecessary_statements
         Map<String, dynamic> _userData =
             _userSnapShot.data() as Map<String, dynamic>;
         _userData["uid"] = _userSnapShot.id;
@@ -104,7 +88,7 @@ class UsersPageProvider extends ChangeNotifier {
             uid: doc!.id,
             activity: false,
             members: _members,
-            currentUserid: _auth.user.uuid,
+            currentUserid: _auth.user!.uuid,
             group: _isGroup,
             message: []),
       );

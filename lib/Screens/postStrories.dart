@@ -25,7 +25,9 @@ class _PostPageState extends State<PostPage> {
   Widget build(BuildContext context) {
     UserRepository _auth = Provider.of<UserRepository>(context);
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => PostStory(_auth))],
+      providers: [
+        ChangeNotifierProvider(create: (_) => PostStory(_auth))
+        ],
       child: PostAcess(),
     );
   }

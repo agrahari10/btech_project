@@ -5,10 +5,8 @@ import 'package:btech_project/Services/DatabaseServices.dart';
 import 'package:btech_project/repository/Userrepositories.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get_it/get_it.dart';
 import '../Models/Chat.dart';
 import '../Models/Chat_user.dart';
@@ -40,7 +38,7 @@ class ChatPageProvider extends ChangeNotifier {
   void getChats() async {
     try {
       _chatsStream =
-          _db!.getChatsForUser(_auth.user.uuid).listen((_snapshot) async {
+          _db!.getChatsForUser(_auth.user!.uuid).listen((_snapshot) async {
         chats = await Future.wait(
           _snapshot.docs.map(
             (_d) async {
@@ -78,7 +76,7 @@ class ChatPageProvider extends ChangeNotifier {
                   uid: _d.id,
                   activity: _chatData["is_activity"],
                   members: _members,
-                  currentUserid: _auth.user.uuid,
+                  currentUserid: _auth.user!.uuid,
                   group: _chatData["is_group"],
                   message: _messages,
                   );

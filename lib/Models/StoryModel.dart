@@ -1,10 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class StoryModel {
-  final Timestamp createdAt;
-  final String senderName;
-  final String story;
-  final String type;
+class UserModel {
+  Timestamp createdAt;
+  String displayName;
+  String email;
+  String location;
+  String photoUrl;
+  String reportedBy;
+  String totalStoryPosted;
+  String userId;
 
-  StoryModel({required this.createdAt, required this.senderName, required this.story, required this.type});
+  UserModel(this.createdAt, this.displayName, this.email, this.location,
+      this.photoUrl, this.reportedBy, this.totalStoryPosted, this.userId);
 }

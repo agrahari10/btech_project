@@ -1,5 +1,5 @@
 import 'package:btech_project/Screens/HomePage.dart';
-import 'package:btech_project/Screens/create.dart';
+
 import 'package:btech_project/Screens/mainsceen.dart';
 import 'package:btech_project/Services/CloudServices.dart';
 import 'package:btech_project/Services/DatabaseServices.dart';
@@ -9,11 +9,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'Provider/PostImage_provider.dart';
-import 'Screens/login.dart';
+
+
+// import 'Provider/PostImage_provider.dart';
+// import 'Screens/login.dart';
 import 'Screens/onboarding.dart';
 import 'Services/NavigationServices.dart';
-import 'widgets/style.dart';
+// import 'widgets/style.dart';
 import 'package:get_it/get_it.dart';
 
 Future<void> main()async {

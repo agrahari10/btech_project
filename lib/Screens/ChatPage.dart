@@ -109,7 +109,7 @@ class _ChatPageState extends State<ChatPage> {
               itemCount: _pageProvider!.messages!.length,
               itemBuilder: (BuildContext _context, int _index) {
                 ChatMessage _message = _pageProvider!.messages![_index];
-                bool _isOwnMessage = _message.senderID == _auth!.user.uuid;
+                bool _isOwnMessage = _message.senderID == _auth!.user!.uuid;
                 return CustomChatListViewTile(
                   deviceHeight: _deviceHeight * 1.2,
                   width: _deviceWidth,
