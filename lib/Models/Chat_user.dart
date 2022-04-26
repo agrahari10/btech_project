@@ -49,6 +49,7 @@
 //     return DateTime.now().difference(lastActive).inMinutes < 10;
 //   }
 import 'package:flutter/material.dart';
+import 'package:location/location.dart';
 
 class ChatUser {
   final String uuid;
@@ -60,6 +61,7 @@ class ChatUser {
   final String phoneNumber;
   final String country;
   final String state;
+  // Location location;
   // late DateTime joinDate;
 
   ChatUser({
@@ -72,7 +74,7 @@ class ChatUser {
     required this.state,
     required this.country,
     required this.phoneNumber,
-    // required this.joinDate,
+    // required this.location,
   });
 
   factory ChatUser.fromJSON(Map<String, dynamic> _json) {
@@ -87,6 +89,7 @@ class ChatUser {
         lastActive: _json["last_active"].toDate(),
         // lastActive: DateTime.now(),
         name: _json["name"]);
+        // location: _json["location"].location.data());
   }
   Map<String ,dynamic> toMap(){
     return {
@@ -107,7 +110,7 @@ String lastActiveday(){
 
 }
 bool wasRecentlyActive(){
-    return DateTime.now().difference(lastActive).inMinutes < 10;
+    return DateTime.now().difference(lastActive).inMinutes < 2;
   }
 
 }

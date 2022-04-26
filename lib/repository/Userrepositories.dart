@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:btech_project/Models/Chat_message.dart';
 import 'package:btech_project/Models/Chat_user.dart';
 import 'package:btech_project/Services/DatabaseServices.dart';
 import 'package:btech_project/Services/NavigationServices.dart';
@@ -10,7 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get_it/get_it.dart';
-
+import 'package:location/location.dart';
 
 enum AppState {
   initial,
@@ -27,21 +26,30 @@ class UserRepository with ChangeNotifier {
   var _user;
   FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  ChatUser? user; 
+  ChatUser? user;
+  // Position? _currentPosition;
   final Geolocator geolocator = Geolocator();
   final geo = Geoflutterfire();
-
 
   // final GoogleSignIn _googleSignIn;
   AppState _appState = AppState.initial;
 
+  var _currentLocation;
+
   AppState get appState => _appState;
+  GeoPoint get location => _currentLocation;
   // get usser => _user;
-  FirebaseAuth? get usser{
+  FirebaseAuth? get usser {
     print(_auth);
-    print("**^&^"*100);
+    print("**^&^" * 100);
     return _auth;
   }
+
+  void initState() {
+    // _determinePosition();
+    // TODO: implement initState
+  }
+
   //  Future<Position?> getCurrentLocation() async {
   //   Position? _currentLocation;
   //   await Geolocator
@@ -52,7 +60,7 @@ class UserRepository with ChangeNotifier {
   //   return _currentLocation;
   // }
 
-  UserRepository(){
+  UserRepository() {
     _auth = FirebaseAuth.instance;
     _navigationServices = GetIt.instance.get<NavigationServices>();
     _databaseServices = GetIt.instance<DatabaseServices>();
@@ -60,8 +68,26 @@ class UserRepository with ChangeNotifier {
     print('user repository initialised');
     print('*' * 100);
     print(_auth);
-    print("--0"*100);
+    print("--0" * 100);
     // _appState = AppState.unauthenticated;
+
+    
+        
+
+        // Geolocator.getCurrentPosition(
+        //         desiredAccuracy: LocationAccuracy.best,
+        //         forceAndroidLocationManager: true)
+        //     .then((Position position) {
+        //   _currentLocation = position;
+        // });      
+      
+      // else {
+      //   Geolocator.getLastKnownPosition(forceAndroidLocationManager: true).then((value) {
+      //     _currentLocation = value;
+      //   });
+      // }
+    // }
+    // );
 
     _auth!.authStateChanges().listen((firebaseUser) async {
       if (firebaseUser == null) {
@@ -73,11 +99,10 @@ class UserRepository with ChangeNotifier {
         // _user = firebaseUser;
         print("auth state changed");
         // _databaseServices.updateUserlastSeenTime(firebaseUser.uid);
-        _databaseServices.getUser(firebaseUser.uid).then(
-          (_snapshot) {
-            print(_snapshot.data());
-            if (_snapshot.data()!= null){
-              Map<String, dynamic> _userData =
+        _databaseServices.getUser(firebaseUser.uid).then((_snapshot) {
+          print(_snapshot.data());
+          if (_snapshot.data() != null) {
+            Map<String, dynamic> _userData =
                 _snapshot.data() as Map<String, dynamic>;
             print("??" * 20);
             print(_userData);
@@ -92,20 +117,19 @@ class UserRepository with ChangeNotifier {
                 "last_active": _userData["last_active"],
                 "photoUrl": _userData["photoUrl"],
                 // "joinDate":_userData["joinDate"],
-                "phoneNumber":_userData["phoneNumber"],
-                "state":_userData["state"],
-                "country":_userData["country"],
-                "address":_userData["address"],
+                "phoneNumber": _userData["phoneNumber"],
+                "state": _userData["state"],
+                "country": _userData["country"],
+                "address": _userData["address"],
+                // "location":_userData["location"]
               },
             );
             print('&' * 100);
             print(user!.toMap());
             // _navigationServices.removAndNavigateToRoute('/home'); //  naviate to home after login
           }
+        });
 
-            }
-            
-        );
         print('%' * 100);
         print('User loggedIN');
         // print(user.toMap());
@@ -120,7 +144,6 @@ class UserRepository with ChangeNotifier {
     final currentUser = _firebaseAuth.currentUser;
     return currentUser != null;
   }
-
 
   Future<dynamic> login(String email, String password) async {
     var user = await _auth!
@@ -149,8 +172,8 @@ class UserRepository with ChangeNotifier {
     required File image,
   }) async {
     _appState = AppState.authenticating;
-    var user = await _auth!.createUserWithEmailAndPassword(
-        email: email, password: password);
+    var user = await _auth!
+        .createUserWithEmailAndPassword(email: email, password: password);
 
     // upload photo to firebase storage
 
@@ -176,7 +199,7 @@ class UserRepository with ChangeNotifier {
       'photoUrl': imageUrl,
       'phoneNumber': phoneNumber,
       'uuid': FirebaseAuth.instance.currentUser!.uid,
-      // 'joinDate': Timestamp.now(),
+      'location': Timestamp.now(),
       "last_active": DateTime.now().toUtc(),
     }).catchError((error) {
       _appState = AppState.unauthenticated;
@@ -223,7 +246,10 @@ class UserRepository with ChangeNotifier {
     TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {});
     String imageUrl = await taskSnapshot.ref.getDownloadURL();
 
-    await _firestore.collection('users').doc(_firebaseAuth.currentUser!.uid).update({
+    await _firestore
+        .collection('users')
+        .doc(_firebaseAuth.currentUser!.uid)
+        .update({
       'name': name,
       'address': address,
       'state': state,
@@ -234,7 +260,7 @@ class UserRepository with ChangeNotifier {
   }
   //  Future<bool> addTextStory({String? userId}) async {
   //   bool sent;
-  //   // String storyId = 
+  //   // String storyId =
   //   Position? location = await getCurrentLocation();
   //   GeoFirePoint userLocation =
   //       geo.point(latitude: location!.latitude, longitude: location.longitude);
@@ -283,5 +309,3 @@ class UserRepository with ChangeNotifier {
   // }
 
 }
-
- 

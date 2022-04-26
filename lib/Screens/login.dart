@@ -1,7 +1,11 @@
 import 'package:btech_project/repository/Userrepositories.dart';
 import 'package:btech_project/widgets/login_button.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geoflutterfire/geoflutterfire.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/style.dart';
@@ -15,6 +19,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  final Geolocator geolocator = Geolocator();
+  Position? _currentPosition;
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   @override
@@ -23,9 +31,100 @@ class _LoginPageState extends State<LoginPage> {
     passwordController.dispose();
     super.dispose();
   }
+  Future<Position> _determinePosition() async {
+  bool serviceEnabled;
+  LocationPermission permission;
+
+  // Test if location services are enabled.
+  serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  if (!serviceEnabled) {
+    // Location services are not enabled don't continue
+    // accessing the position and request users of the 
+    // App to enable the location services.
+    return Future.error('Location services are disabled.');
+  }
+
+  permission = await Geolocator.checkPermission();
+  if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied) {
+      // Permissions are denied, next time you could try
+      // requesting permissions again (this is also where
+      // Android's shouldShowRequestPermissionRationale 
+      // returned true. According to Android guidelines
+      // your App should show an explanatory UI now.
+      return Future.error('Location permissions are denied');
+    }
+  }
+  
+  if (permission == LocationPermission.deniedForever) {
+    // Permissions are denied forever, handle appropriately. 
+    return Future.error(
+      'Location permissions are permanently denied, we cannot request permissions.');
+  } 
+
+  // When we reach here, permissions are granted and we can
+  // continue accessing the position of the device.
+  return _getCurrentLocation();
+}
+_getCurrentLocation() {
+    Geolocator
+      .getCurrentPosition(forceAndroidLocationManager: true)
+      .then((position) {
+        if(mounted){
+          setState(() {
+          _currentPosition = position;
+          print(_currentPosition!.latitude);
+          print(_currentPosition!.longitude);
+          print('ff'*200);
+        });
+        }
+        // GeoFirePoint center = geo.point(latitude: _currentPosition!.latitude, longitude: _currentPosition!.longitude);
+        // print(center);
+        // _firestore.collection("location")
+        print("T"*100);
+      },
+      ).catchError((e) {
+        print(e);
+      });
+  }
+
+  // Future<Position> getCurrentLocation() async {
+  //   Position _currentLocation;
+  //   await geolocator
+  //       .getCurrentPosition(desiredAccuracy: LocationAccuracy.best,forceAndroidLocationManager: true)
+  //       .then((Position position) {
+  //     _currentLocation = position;
+  //   });
+  //   return _currentLocation;
+  // }
   Widget build(BuildContext context) {
     final _userRepository = Provider.of<UserRepository>(context);
     Size size = MediaQuery.of(context).size;
+        final geo = Geoflutterfire();
+
+    void storeUserToDataBase(User user) async {
+      Position location = await _determinePosition();
+      GeoFirePoint userLocation =
+          geo.point(latitude: location.latitude, longitude: location.longitude);
+      _firestore
+          .collection("users")
+          .doc(user.uid)
+          .set({
+            'userId': user.uid,
+            'displayName': user.displayName,
+            'photoUrl': user.photoURL ?? null,
+            'email': user.email,
+            'createdAt': DateTime.now(),
+            'reportedBy': [],
+            'totalStoryPosted': 0,
+            'location': userLocation.data,
+          })
+          .then((res) => print('data added to db'))
+          .catchError((error) => {
+                print(error),
+              });
+    }
     void _showErrorSnackBar({required String errorCode}) {
       String errorText;
       if (errorCode == 'wrong-password' ||
@@ -224,4 +323,5 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+  
 }

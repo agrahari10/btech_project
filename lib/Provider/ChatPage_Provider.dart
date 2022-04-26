@@ -31,7 +31,7 @@ class ChatPageProvider extends ChangeNotifier {
   @override
   void dispose() {
     // TODO: implement dispose
-    _chatsStream!.cancel();
+    _chatsStream?.cancel();
     super.dispose();
   }
 
@@ -51,7 +51,7 @@ class ChatPageProvider extends ChangeNotifier {
                 DocumentSnapshot _userSnapshot = await _db!.getUser(uuid);
 
                 Map<String, dynamic> _userData =
-                _userSnapshot.data()! as Map<String, dynamic>;
+                _userSnapshot.data() as Map<String, dynamic>;
                 _userData["uuid"] = _userSnapshot.id;
                 print(_userData['uuid']);
 

@@ -78,7 +78,6 @@ class _TextPostState extends State<TextPost> {
                         _postText!.currentState!.save();
                           // ignore: unnecessary_statements
                           _postProvider.postText();
-                          print(_postProvider.postText());
 
                     }
                     Fluttertoast.showToast(msg: 'Text Post Successfully');

@@ -6,7 +6,9 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:location/location.dart';
 
 const String USER_COLLECTION = "users";
 class CloudStorageServices{
@@ -43,4 +45,24 @@ class CloudStorageServices{
     }
 
   }
+  // Future<String> Userlocation(String _userID,Location location)async{
+  //   try{
+
+  //   }
+  //   catch(e){
+  //     print(e);
+  //   }
+  // }
+  // Future<Position> getCurrentLocation() async {
+  //   Position _currentLocation;
+  //   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+  //   await geolocator
+  //       .getCurrentPosition(
+  //           desiredAccuracy: LocationAccuracy.best,
+  //           locationPermissionLevel: GeolocationPermission.locationWhenInUse)
+  //       .then((Position position) {
+  //     _currentLocation = position;
+  //   });
+  //   return _currentLocation;
+  // }
 }

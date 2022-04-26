@@ -114,7 +114,7 @@ class _CreateAccountState extends State<CreateAccount> {
               ),
               SingleChildScrollView(
                 child: Container(
-                  height: size.height*1.4,
+                  height: size.height*1.6,
                   width: size.width*1.2,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.only(
@@ -434,8 +434,8 @@ class _CreateAccountState extends State<CreateAccount> {
                               ));
                               await _userRepository
                                   .signup(
-                                email: emailController.value.text,
-                                password: passwordController.value.text,
+                                email: emailController.value.text.trim(),
+                                password: passwordController.value.text.trim(),
                                 phoneNumber: phoneController.value.text,
                                 name: nameController.value.text,
                                 address: adressController.value.text,
