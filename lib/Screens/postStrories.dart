@@ -2,12 +2,9 @@ import 'dart:io';
 
 import 'package:btech_project/Provider/PostImage_provider.dart';
 import 'package:btech_project/Services/CloudServices.dart';
-import 'package:btech_project/Services/MediaServices.dart';
 import 'package:btech_project/repository/Userrepositories.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
@@ -41,12 +38,9 @@ class PostAcess extends StatefulWidget {
 }
 
 class _PostAcessState extends State<PostAcess> {
-  CloudStorageServices? _cloudStorageServices;
-  PlatformFile? _profileImage;
   PickedFile? imageFile;
   @override
   Widget build(BuildContext context) {
-    _cloudStorageServices = GetIt.instance.get<CloudStorageServices>();
     PostStory _postProvider = context.watch<PostStory>();
     return SafeArea(
       child: Scaffold(

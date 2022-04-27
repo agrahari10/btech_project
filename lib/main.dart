@@ -1,3 +1,4 @@
+import 'package:btech_project/Provider/PostImage_provider.dart';
 import 'package:btech_project/Screens/HomePage.dart';
 
 import 'package:btech_project/Screens/mainsceen.dart';
@@ -29,7 +30,7 @@ Future<void> main()async {
       MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => UserRepository()),
-          // ChangeNotifierProvider(create: (_) => PostStorys(A))
+          ChangeNotifierProvider(create: (_) => PostStory(UserRepository()))
         ],
         child: MyApp(),
       ),);

@@ -15,7 +15,7 @@ class PostStories {
   final DateTime sentTime;
   // final String location;
 
-  final location;
+  final  position;
 
   
 
@@ -24,7 +24,7 @@ class PostStories {
       required this.content,
       required this.senderID,
       required this.sentTime,
-      required this.location
+      required this.position
       });
 
   factory PostStories.fromJSON(Map<String, dynamic> _json) {
@@ -45,7 +45,7 @@ class PostStories {
         content: _json["content"],
         senderID: _json["sender_id"],
         sentTime: _json["sent_time"].toDate(),
-        location: _json["location"]
+        position: _json["position"]
         );
   }
   Map<String, dynamic> toJson() {
@@ -66,7 +66,7 @@ class PostStories {
       "type": _postType,
       "sender_id": senderID,
       "sent_time": Timestamp.fromDate(sentTime),
-      "location": location,
+      "position": position,
     };
   }
 }

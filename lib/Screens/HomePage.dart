@@ -48,6 +48,7 @@ double radius = 5;
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     UserRepository _auth = Provider.of<UserRepository>(context);
+    PostStory postStory = Provider.of<PostStory>(context);
     return Scaffold(
 
       floatingActionButton: ExpandableFab(
@@ -71,20 +72,38 @@ double radius = 5;
           ),
         ],
       ),
-      body:MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => PostStory(_auth))
-        ],
-      child: _buildUI(),
-    )
+      body:_buildUI(size, postStory)
     );
   }
-Widget _buildUI(){
+Widget _buildUI(Size size, PostStory postStory){
   return Container(
-    child: ListView.builder(itemBuilder: (BuildContext context, index){
-      // _pageProviderPost = context.watch<PostStory>();
-      return Text('data');
+    height: size.height * 0.9,
+    child:  StreamBuilder(
+      stream: postStory.getStories(),
+      builder: (context, dynamic snapshot) {
+        print(snapshot.data);
+        print('\$' * 30);
+      if (!snapshot.hasData) {return SizedBox();}
+      if (snapshot.connectionState == ConnectionState.waiting) {return SizedBox();}
+   
+        return ListView.builder(
+          itemCount: snapshot.data.length,
+          itemBuilder: (context, index) {
+           var docs = snapshot.data;
+         
+           print('@' * 20)
+;          return Text(docs[index]['content']);
+        },);
+
+
+      
+
+      // return CircularProgressIndicator();
     },),
+    // child: ListView.builder(itemBuilder: (BuildContext context, index){
+    //   // _pageProviderPost = context.watch<PostStory>();
+    //   return Text('data');
+    // },),
   );
 }
 
