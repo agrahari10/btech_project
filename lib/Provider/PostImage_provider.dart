@@ -95,11 +95,12 @@ class PostStory extends ChangeNotifier {
     // Create a geoFirePoint
     GeoFirePoint center =
         geo.point(latitude: currentLocation.latitude, longitude: currentLocation.longitude);
+        print(currentLocation.latitude);
 
 // get the collection reference or query
     var collectionReference = FirebaseFirestore.instance.collection('Stories');
 
-    double radius = 10;
+    double radius = 5;
     String field = 'position';
 
     Stream<List<DocumentSnapshot>> stream = geo
