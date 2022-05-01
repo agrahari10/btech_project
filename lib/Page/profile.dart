@@ -1,4 +1,4 @@
-// import 'dart:async';
+
 import 'dart:io';
 
 import 'package:btech_project/repository/Userrepositories.dart';
@@ -45,7 +45,6 @@ class _ProfilePageState extends State<ProfilePage> {
           child: SingleChildScrollView(
             
             child: Container(
-              // color: Colors.red,
               height: _deviceHeight * 0.95,
               width: _deviceWidth * 0.80,
               child: Form(
@@ -67,7 +66,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       hintText: "Name",
                       regEx: r'.{2,}',
                     ),
-                    // 
                     CustomTextField(
                       obscureText: false,
                       onSaved: (_value) {
@@ -79,9 +77,6 @@ class _ProfilePageState extends State<ProfilePage> {
                         },
                         
                       hintText: "Phone Number",
-                      // regEx: r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-          
-                      // regEx: r'.{2,}',
                       regEx: r'(^(?:[+0]9)?[0-9]{10,12}$)',
                     ),
                     CustomTextField(

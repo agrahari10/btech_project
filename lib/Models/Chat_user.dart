@@ -1,55 +1,4 @@
-// import 'package:flutter/material.dart';
 
-// class ChatUser {
-//   // final String uid;
-//   // final String name;
-//   // final String email;
-//   // final String imageURL;
-//   // late DateTime lastActive;
-//     late final String email;
-//     final String password;
-//     final String phoneNumber,
-//     final String name,
-//     final String address,
-//     final String state,
-//     final String country,
-//     final File image,
-
-//   ChatUser({
-//     required this.uid,
-//     required this.imageURL,
-//     required this.email,
-//     required this.lastActive,
-//     required this.name,
-//   });
-
-//   factory ChatUser.fromJSON(Map<String, dynamic> _json) {
-//     return ChatUser(
-//         uid: _json["uid"],
-//         imageURL: _json["image"],
-//         email: _json["email"],
-//         lastActive: _json["last_active"].toDate(),
-//         // lastActive: DateTime.now(),
-//         name: _json["name"]);
-//   }
-//   Map<String ,dynamic> toMap(){
-//     return {
-//       "email":email,
-//       "Name" : name,
-//       "lastActive":lastActive,
-//       "Image" : imageURL,
-//       "uid":uid
-//   };
-// }
-// String lastActiveday(){
-//     return "${lastActive.month}/${lastActive.day}/${lastActive.year}";
-
-// }
-// bool wasRecentlyActive(){
-//     return DateTime.now().difference(lastActive).inMinutes < 10;
-//   }
-import 'package:flutter/material.dart';
-import 'package:location/location.dart';
 
 class ChatUser {
   final String uuid;
@@ -87,9 +36,8 @@ class ChatUser {
         photoUrl: _json["photoUrl"],
         email: _json["email"],
         lastActive: _json["last_active"].toDate(),
-        // lastActive: DateTime.now(),
         name: _json["name"]);
-        // location: _json["location"].location.data());
+        
   }
   Map<String ,dynamic> toMap(){
     return {

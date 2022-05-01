@@ -30,8 +30,6 @@ class PostStory extends ChangeNotifier {
 
   set story(String _value) {
     _storyText = _value;
-    print(_storyText);
-    print('^^' * 100);
   }
 
   PostStory(this._auth) {
@@ -59,16 +57,15 @@ class PostStory extends ChangeNotifier {
   postMessage(_file) async {
     try {
       if (_file != null) {
-        print("*#*" * 100);
         String? _dowanloadURL =
             await _storage?.saveUserImageToStorage(_auth!.user!.uuid, _file);
         PostStories _postStory = PostStories(
           content: _dowanloadURL!,
+          name: _auth!.user!.name,
           senderID: _auth!.user!.uuid,
           sentTime: DateTime.now(),
           type: PostType.IMAGE,
           position: _geoHash.data,
-          // location: GeoPoint(location.latitude, location.longitude),
         );
         _db!.addPost(_auth!.user!.uuid, _postStory);
       }
@@ -79,10 +76,10 @@ class PostStory extends ChangeNotifier {
 
   postText() async {
     if (_storyText != null) {
-      print('location ' * 100);
       PostStories _story = PostStories(
         content: _storyText!,
         senderID: _auth!.user!.uuid,
+        name: _auth!.user!.name,
         sentTime: DateTime.now(),
         type: PostType.TEXT,
         position: _geoHash.data,

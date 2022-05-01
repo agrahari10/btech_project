@@ -32,7 +32,6 @@ class DatabaseServices {
 
   Future<void> addPost(String _uuid, PostStories _postStories) async {
     try {
-      print('kkkkkk'*100);
       await _db
           // .doc(_uuid)
           .collection("Stories")
@@ -43,18 +42,13 @@ class DatabaseServices {
   }
 
   Future<QuerySnapshot> allUsers({String? name}) {
-    print(_auth?.email);
-    print('900'*100);
     Query _query = _db.collection('Stories');
      print(_auth?.email);
     return _query.get();
   }
   
   Future<QuerySnapshot> getUsers({String? name}) {
-    print(_auth?.email);
-    print('900'*100);
-    Query _query = _db.collection(USER_COLLECTION).where("name",isNotEqualTo: _auth!.email);
-     print(_auth!.email);
+    Query _query = _db.collection(USER_COLLECTION).where("name",isNotEqualTo: _auth!.displayName);
     if (name != null) {
       _query = _query
           .where("name", isGreaterThanOrEqualTo: name)
@@ -114,15 +108,7 @@ class DatabaseServices {
     }
   }
 
-  // Future<void> updateUserlastSeenTime(String _uid) async {
-  //   try {
-  //     await _db.collection(USER_COLLECTION).doc(_uid).update({
-  //       "last_active": DateTime.now().toUtc(),
-  //     });
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
+  
 
   Future<void> deleteChat(String _chatID) async {
     try {

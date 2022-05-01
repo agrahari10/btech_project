@@ -1,7 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:location/location.dart';
 
 enum PostType {
   TEXT,
@@ -13,8 +10,7 @@ class PostStories {
   final PostType type;
   final String content;
   final DateTime sentTime;
-  // final String location;
-
+  final String name;
   final  position;
 
   
@@ -24,7 +20,8 @@ class PostStories {
       required this.content,
       required this.senderID,
       required this.sentTime,
-      required this.position
+      required this.position,
+      required this.name,
       });
 
   factory PostStories.fromJSON(Map<String, dynamic> _json) {
@@ -34,9 +31,6 @@ class PostStories {
       case "text":
         _postType = PostType.TEXT;
         break;
-      // case "image":
-      //   _postType = PostType.IMAGE;
-      //   break;
       default:
         _postType = PostType.IMAGE;
     }
@@ -45,7 +39,8 @@ class PostStories {
         content: _json["content"],
         senderID: _json["sender_id"],
         sentTime: _json["sent_time"].toDate(),
-        position: _json["position"]
+        position: _json["position"],
+        name: _json["name"],
         );
   }
   Map<String, dynamic> toJson() {
@@ -67,17 +62,8 @@ class PostStories {
       "sender_id": senderID,
       "sent_time": Timestamp.fromDate(sentTime),
       "position": position,
+      "name":name
     };
   }
 }
 
-// import 'package:cloud_firestore/cloud_firestore.dart';
-
-// class StoryModel {
-//   final Timestamp createdAt;
-//   final String senderName;
-//   final String story;
-//   final String type;
-
-//   StoryModel({required this.createdAt,required this.senderName,required this.story,required this.type});
-// }

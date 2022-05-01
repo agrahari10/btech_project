@@ -80,9 +80,6 @@ class _ChatsPageState extends State<ChatsPage> {
       child: (() {
       if (_chats != null) {
         if (_chats.length != 0) {
-          print(_chats);
-            print('chats');
-            print('&^'*100);
           return ListView.builder(
             itemCount: _chats.length,
             itemBuilder: (BuildContext _context, int _index) {
@@ -114,16 +111,11 @@ class _ChatsPageState extends State<ChatsPage> {
     bool _isActive = _recepients.any((_d) => _d.wasRecentlyActive());
     String _subtitleText = "";
     if (_chat.message.isNotEmpty) {
-      // print(MessageType.IMAGE);
-      print(_chat.message.first.content);
-      print(_chat.recepients().length);
-      print('Chat Message');
-      print("K"*1000);
       _subtitleText = _chat.message.first.type != MessageType.TEXT
           ? "Media Attachment"
           : _chat.message.first.content;
     }
-    // return Text('j');
+
     return CustomListViewTileWithActivity(
         height: _deviceHeight * 0.10,
         imagePath:_chat.imageeUrl(),

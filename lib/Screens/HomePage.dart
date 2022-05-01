@@ -100,16 +100,18 @@ class _HomeScreenState extends State<HomeScreen> {
               var docs = snapshot.data;
               print('@' * 20);
               
-              if (  docs[index]['type'] == "text") {
+              if (docs[index]['type'] == "text") {
                 return Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 20.0, vertical: 20),
-                  child: Container(
-                    height: size.height * 0.35,
-                    width: size.width * 0.75,
+                  child: Column(
+                    children: [
+                      Container(
+                        height: size.height * 0.35,
+                        width: size.width * 0.75,
               
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
               colors: [
@@ -117,24 +119,29 @@ class _HomeScreenState extends State<HomeScreen> {
                 Color(0xff243b55)
               ],
             ),
-                      border: Border.all(
-                          color: const Color(0xFF000000),
-                          width: 2.0,
-                          style: BorderStyle.solid),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(20),
+                          border: Border.all(
+                              color: const Color(0xFF000000),
+                              width: 2.0,
+                              style: BorderStyle.solid),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            docs[index]['content'].toString().toUpperCase(),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 25,
+                                color: Colors.white.withOpacity(1.0),
+                                // height: ,
+                                fontWeight: FontWeight.w700),
+                          ),
+                        ),
                       ),
-                    ),
-                    child: Center(
-                      child: Text(
-                        docs[index]['content'].toString().toUpperCase(),
-                        style: TextStyle(
-                            fontSize: 25,
-                            color: Colors.white.withOpacity(1.0),
-                            // height: ,
-                            fontWeight: FontWeight.w700),
-                      ),
-                    ),
+                      Text(docs[index]['name']),
+
+                    ],
                   ),
                 );
               }
@@ -142,23 +149,39 @@ class _HomeScreenState extends State<HomeScreen> {
                 return Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 20.0, vertical: 20),
-                  child: Container(
-                    height: size.height * 0.35,
-                    width: size.width * 0.75,
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: const Color(0xFF000000),
-                            width: 2.0,
-                            style: BorderStyle.solid),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(20),
-                        ),
-                        image: DecorationImage(
-                            fit: BoxFit.fill,
-                            image: NetworkImage(docs[index]['content']),
-                            ),
-                            ),
-                  ),
+                  child: GestureDetector(
+                    onTap: (){
+                        
+                    },
+                    child: GestureDetector(
+                      onTap: (){},
+                      child: Column(
+                        children: [
+                          Container(
+                            height: size.height * 0.35,
+                            width: size.width * 0.75,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: const Color(0xFF000000),
+                                    width: 2.0,
+                                    style: BorderStyle.solid),
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(20),
+                                ),
+                                image: DecorationImage(
+                                    fit: BoxFit.fill,
+                                    image: NetworkImage(docs[index]['content']),
+                                  
+                                    ),
+                                    ),
+                                    
+                          ),
+                      Text(docs[index]['name']),
+
+                        ],
+                      ),
+                      
+                    ),)
                 );
               }
               // return Text(docs[index]['content']);

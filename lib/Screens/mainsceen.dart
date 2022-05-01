@@ -1,12 +1,8 @@
-import 'package:btech_project/Page/Calling.dart';
-import 'package:btech_project/Page/chat.dart';
+
 import 'package:btech_project/Page/profile.dart';
-import 'package:btech_project/Screens/ChatPage.dart';
 import 'package:btech_project/Screens/ChatUserPage.dart';
 import 'package:btech_project/Screens/Chat_Screen.dart';
 import 'package:btech_project/repository/Userrepositories.dart';
-import 'package:btech_project/widgets/style.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

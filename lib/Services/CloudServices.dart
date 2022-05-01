@@ -45,24 +45,4 @@ class CloudStorageServices{
     }
 
   }
-  // Future<String> Userlocation(String _userID,Location location)async{
-  //   try{
-
-  //   }
-  //   catch(e){
-  //     print(e);
-  //   }
-  // }
-  // Future<Position> getCurrentLocation() async {
-  //   Position _currentLocation;
-  //   final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
-  //   await geolocator
-  //       .getCurrentPosition(
-  //           desiredAccuracy: LocationAccuracy.best,
-  //           locationPermissionLevel: GeolocationPermission.locationWhenInUse)
-  //       .then((Position position) {
-  //     _currentLocation = position;
-  //   });
-  //   return _currentLocation;
-  // }
 }

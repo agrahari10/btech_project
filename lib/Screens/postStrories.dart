@@ -1,12 +1,9 @@
 import 'dart:io';
 
 import 'package:btech_project/Provider/PostImage_provider.dart';
-import 'package:btech_project/Services/CloudServices.dart';
 import 'package:btech_project/repository/Userrepositories.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -84,8 +81,6 @@ class _PostAcessState extends State<PostAcess> {
                         ),
                 onPressed: () {
                   _postProvider.postMessage(imageFile);
-                  print('^&' * 200);
-                  print(imageFile);
                   Fluttertoast.showToast(msg: 'Image Post Successfully');
                   Navigator.of(context).pop();
                 },

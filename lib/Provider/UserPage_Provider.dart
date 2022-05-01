@@ -36,13 +36,9 @@ class UsersPageProvider extends ChangeNotifier {
     _selectedUsers = [];
     try {
       _database!.getUsers(name: name).then((_snapshot) {
-        print('+/+'*80);
         users = _snapshot.docs.map((_doc) {
           Map<String, dynamic> _data = _doc.data() as Map<String, dynamic>;
-          print(_data);
-          print("--/++"*100);
           _data["uid"] = _doc.id;
-          print(_data);
           return ChatUser.fromJSON(_data);
         }).toList();
         notifyListeners();
@@ -76,8 +72,6 @@ class UsersPageProvider extends ChangeNotifier {
       for (var _uid in _membersIds) {
         // if ( )
         DocumentSnapshot _userSnapShot = await _database!.getUser(_uid);
-        print(_userSnapShot);
-        print('ddf'*10);
         Map<String, dynamic> _userData =
             _userSnapShot.data() as Map<String, dynamic>;
         _userData["uid"] = _userSnapShot.id;

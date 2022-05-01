@@ -74,9 +74,6 @@ _getCurrentLocation() {
         if(mounted){
           setState(() {
           _currentPosition = position;
-          print(_currentPosition!.latitude);
-          print(_currentPosition!.longitude);
-          print('ff'*200);
         });
         }
         // GeoFirePoint center = geo.point(latitude: _currentPosition!.latitude, longitude: _currentPosition!.longitude);

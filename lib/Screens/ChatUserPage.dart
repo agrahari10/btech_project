@@ -94,15 +94,11 @@ class _UsersPageState extends State<UsersPage> {
   Widget _userList() {
     List<ChatUser>? _users = _pageProvider.users;
     return Expanded(child: () {
-      print(_users);
-      print('*&*'*100);
       if (_users != null) {
         if (_users.length != 0) {
           return ListView.builder(
             itemCount: _users.length,
             itemBuilder: (BuildContext _context, int _index) {
-              print(_users[_index].email);
-              print('SSS'*100);
               if (_authh?.email != _users[_index].email){
                 return CustomListViewTile(
                     height: _deviceHeight * 0.10,
@@ -142,14 +138,6 @@ class _UsersPageState extends State<UsersPage> {
   }
 
   Widget _createChatButton() {
-    // ChatUser thisCurrentUser = _databaseServices.getCurrentUser();
-    // final thisIsCurrentUser = FirebaseAuth.instance.currentUser;
-    // print(_pageProvider.selectedUsers.contains(thisCurrentUser) );
-    // print("#"*200);
-    // return
-    // DatabaseService.;
-    // _pageProvider.selectedUsers.contains(thisCurrentUser) ?
-    // SizedBox():
     return Visibility(
       visible: _pageProvider.selectedUsers.isNotEmpty,
       child: RoundedButton(
