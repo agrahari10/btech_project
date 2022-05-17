@@ -19,7 +19,7 @@ class _MainScreenState extends State<MainScreen> {
     HomeScreen(),
     ChatsPage(),
     UsersPage(),
-    ProfilePage(),
+    // ProfilePage(),
   ];
 
   @override
@@ -84,19 +84,19 @@ class _MainScreenState extends State<MainScreen> {
               color: Colors.black12,
             ),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.edit,
-              color: Colors.blueGrey,
-              size: 30,
-            ),
-            label: 'Profile',
-            activeIcon: Icon(
-              Icons.person,
-              color: Colors.black12,
-              size: 30,
-            ),
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(
+          //     Icons.edit,
+          //     color: Colors.blueGrey,
+          //     size: 30,
+          //   ),
+          //   // label: 'Profile',
+          //   // activeIcon: Icon(
+          //   //   Icons.person,
+          //   //   color: Colors.black12,
+          //   //   size: 30,
+          //   // ),
+          // ),
 
         ],
         onTap: (index) {

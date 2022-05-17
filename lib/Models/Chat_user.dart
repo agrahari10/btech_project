@@ -58,7 +58,7 @@ String lastActiveday(){
 
 }
 bool wasRecentlyActive(){
-    return DateTime.now().difference(lastActive).inMinutes < 2;
+    return DateTime.now().difference(lastActive).inMinutes < 5;
   }
 
 }

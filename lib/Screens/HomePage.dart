@@ -39,9 +39,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   // late PostStory _pageProviderPost;
-  Position? _currentPosition;
+  // Position? _currentPosition;
   Position? currentPosition;
-  String? _currentAddress;
+  // String? _currentAddress;
   Random random = Random();
   // Permission
 
