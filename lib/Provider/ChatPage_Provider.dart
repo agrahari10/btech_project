@@ -90,6 +90,7 @@ class ChatPageProvider extends ChangeNotifier {
     } catch (e) {
       print("Error getting chats");
       print(e);
+      return ;
     }
   }
 }

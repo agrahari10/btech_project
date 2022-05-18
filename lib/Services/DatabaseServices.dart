@@ -34,7 +34,7 @@ class DatabaseServices {
     try {
       await _db
           // .doc(_uuid)
-          .collection("Stories")
+          .collection("Stories")  //POST STORIES 
           .add(_postStories.toJson());
     } catch (e) {
       print(e);
